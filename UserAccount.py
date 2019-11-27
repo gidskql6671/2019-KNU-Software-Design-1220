@@ -1,71 +1,67 @@
+from StudentDB import StudentDB
+
 class UserAccount:
 
     def __init__(self, user_id, user_pw):
         self._user_id = user_id
         self._user_pw = user_pw
 
-    def get_id(self):
-        return self._user_id
-
-    def get_pw(self):
-        return self._user_pw
-
-    def del_acc(self):
+    def register_acc(self):
         pass
+
+    def del_acc(self, user_id, user_pw):
+        user_DB = StudentDB()
+        user_DB.delete((self._user_id, self._user_pw))
 
 
 class Student(UserAccount):
 
-    def __init__(self, user_id, user_pw, std_id, std_name, std_major, take_ABEEK_course):
+    def __init__(self, user_id, user_pw):
+        self._user_id = user_id
+        self._user_pw = user_pw
+        self._std_id = ""
+        self._name = ""
+        self._major = ""
+        self._is_ABEEK = 0
+
+    def get_info(self, user_id, user_pw, std_id, name, major, is_ABEEK):
         self._user_id = user_id
         self._user_pw = user_pw
         self._std_id = std_id
-        self._std_name = std_name
-        self._std_major = std_major
-        self._take_ABEEK_course = take_ABEEK_course
+        self._name = name
+        self._major = major
+        self._is_ABEEK = is_ABEEK
 
-    def get_std_id(self):
-        return self._std_id
+    def login( self, input_id, input_pwd ):
+        user_DB = StudentDB()
+        # account exists => return True
+        if user_DB.search((input_id, input_pwd)):
+            return True
+        # account doesn't exist => return True
+        # login() == F 일 경우 self.get_info( , , , , , , )로 전체 사용자 정보 받아오고 register로 등록
+        # user_DB.register((self._user_id, self._user_pw, self._std_id, self._name, self._major, self._is_ABEEK))
+        else:
+            return False
 
-    def get_std_name(self):
-        return self._std_name
-
-    def get_std_major(self):
-        return self._std_major
-
-    def take_abeek(self):
-        return self._take_ABEEK_course
 
 
 class Faculty(UserAccount):
 
-    def __init__(self, user_id, user_pw, fclt_id, fclt_name, fclt_dpt):
+    def __init__(self, user_id, user_pw, fclt_id, name, department):
         self._user_id = user_id
         self._user_pw = user_pw
         self._fclt_id = fclt_id
-        self._fclt_name = fclt_name
-        self._fclt_dpt = fclt_dpt
+        self._name = name
+        self._department = department
 
-    def get_fclt_id(self):
-        return self._fclt_id
-
-    def get_fclt_name(self):
-        return self._fclt_name
-
-    def get_fclt_dpt(self):
-        return self._fclt_dpt
-
-
-def login( input_id, input_pwd ):
-    # DB search ==> exist
-    return True
-
-    return sign_up()
-
-
-def sign_up(newid, newpw, stdid):
-    new_id = newid
-    new_pw = newpw
-    user_std_id = stdid
-
-    # add to DB
+"""
+    def login( self, input_id, input_pwd ):
+        user_DB = StudentDB()
+        # account exists => return True
+        if user_DB.search((input_id, input_pwd)):
+            return True
+        # account doesn't exist => execute register()
+        
+        else:
+            return user_DB.register((self._user_id, self._user_pw, self._fclt_id, self._name, self._department))
+"""
