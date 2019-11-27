@@ -12,7 +12,7 @@ class StudentDB(object):
         
 
     # args로 (user_id, user_pw, student_id, name, major, is_abeek) 6개 항목 tuple을 줘야 함
-    def insert(self, args: tuple):
+    def register(self, args: tuple):
         self.cur.execute('INSERT INTO student VALUES(?, ?, ?, ?, ?, ?)', args)
         self.conn.commit()
 
@@ -22,6 +22,12 @@ class StudentDB(object):
         data = self.cur.fetchone()
         self.conn.commit()
         return data
+    
+    # args로 (user_id, user_pw) tuple을 주면, 해당 행을 삭제
+    def delete(self, args: tuple):
+        self.cur.execute('DELETE * FROM student WHERE id=? AND password=?', args)
+        self.conn.commit()
+
 
     def __del__(self):
         self.conn.close()
