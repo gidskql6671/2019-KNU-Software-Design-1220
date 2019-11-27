@@ -106,7 +106,9 @@ class LoginUI:
             messagebox.showerror(title="로그인 에러", message="입력란을 모두 채워주세요")
             return
 
-        if self.radVar_login.get() == 1: # 학생
+        if self.radVar_login.get() == 1:  # 학생
             print(self._entry_id.get(), self._entry_pwd.get(), "학생임")
+            return
         else:
             print(self._entry_id.get(), self._entry_pwd.get(), "교직원임")
+            return
