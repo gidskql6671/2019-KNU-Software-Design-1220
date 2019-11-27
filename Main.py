@@ -2,8 +2,9 @@ import tkinter
 import tkinter.font
 from LoginUI import *
 
+
 def main():
-    # window 생성
+    # window창 생성
     window = tkinter.Tk()
 
     # window 기본 설정
@@ -13,7 +14,7 @@ def main():
 
     font = tkinter.font.Font(family="맑은 고딕", size=20)
 
-    loginUI = LoginUI(window, font)
+    LoginUI(window, font).start()
 
 
     window.mainloop()
