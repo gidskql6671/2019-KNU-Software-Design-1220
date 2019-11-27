@@ -16,7 +16,6 @@ def main():
 
     LoginUI(window, font).start()
 
-
     window.mainloop()
 
 
