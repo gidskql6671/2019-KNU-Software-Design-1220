@@ -1,6 +1,6 @@
 import tkinter
 import tkinter.font
-from LoginUI import *
+from UI.LoginUI import *
 
 
 def main():
