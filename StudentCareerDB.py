@@ -1,6 +1,6 @@
 import sqlite3
 
-class FacultyDB(object):
+class StudentCareerDB(object):
     conn = None
     cur = None
     # TODO: HERE (학생경력, 졸업요건 DB설계, 커넥션 작성)
