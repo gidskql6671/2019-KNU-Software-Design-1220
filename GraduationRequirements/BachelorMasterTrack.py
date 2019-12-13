@@ -1,6 +1,6 @@
-from GraduationRequirements import GradRequirement
+from GraduationRequirements import GlobalSWMajor
 
-class GlobalSWMajor(GradRequirement):
+class BachelorMasterTrack(GlobalSWMajor):
 
     def __init__(self, total_credits, if_docsubmit):
         self.total_credits = total_credits
@@ -11,6 +11,8 @@ class GlobalSWMajor(GradRequirement):
         self.consultCount = ''
         self.swCredit = ''
         self.liberalCredit = ''
+        self.overseaCredit = ''
+        self.internCredit = ''
         self.GradConditionTable[0] = ''
 
 
@@ -36,6 +38,16 @@ class GlobalSWMajor(GradRequirement):
         self.GradConditionTable[4][0] = '교양학점'
         #self.liberalCredit = DB에서 받아옴
         #self.GradConditionTable[4][1] = self.liberalCredit
+
+        self.GradConditionTable[5][0] = '해외대학학점'
+        #self.overseaCredit = DB에서 받아옴
+        #self.GradConditionTable[5][1] = self.overseaCredit
+
+        self.GradConditionTable[6][0] = '현장실습'
+        #self.internCredit = DB에서 받아옴
+        #self.GradConditionTable[6][1] = self.internCredit
+
+
 
     # 이 이차원 배열을 리턴함 (getter)
     def get_GradCondition(self):

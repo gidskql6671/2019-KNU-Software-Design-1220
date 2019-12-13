@@ -22,7 +22,7 @@ class DeepCseMajorAfter12(DeepCseMajor):
         #self.english_score = DB에서 받아옴
         #self.GradConditionTable[1][1] = self.english_score
 
-        self.GradConditionTable[2][0] = '현장실습 이수학점'
+        self.GradConditionTable[2][0] = '현장실습'
         #self.internship_credit = DB에서 받아옴
         #GradConditionTable[2][1] = self.internship_credit
 
