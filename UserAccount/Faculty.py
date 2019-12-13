@@ -1,4 +1,4 @@
-from UserAccount import UserAccount
+from UserAccount.UserAccount import UserAccount
 from FacultyDB import FacultyDB
 
 
