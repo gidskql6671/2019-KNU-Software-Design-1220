@@ -1,25 +1,25 @@
-from tkinter import *
-from tkinter import messagebox
+from UI.UITemplate import *
 from UI.StudentMainUI import *
 from UI.FacultyMainUI import *
 
 
-class LoginUI:
+class LoginUI(UITemplate):
     def __init__(self, window: Tk, font):
-        self.window = window
-        self.font = font
+        super().__init__(window, font)
+
         self._type_user = None
+        self._status = 0
         self._student_main_ui = StudentMainUI(window, font, self)
 
         self._setting_ui()
 
     def _setting_ui(self):
+        super()._setting_ui()
+
         self.frame_login = Frame(self.window, borderwidth=5, relief="groove", bg="gray81", padx=10, pady=10)
         self.frame_register_student = Frame(self.window, borderwidth=5, relief="groove", bg="gray81", padx=10, pady=10)
         self.frame_register_faculty = Frame(self.window, borderwidth=5, relief="groove", bg="gray81", padx=10, pady=10)
         self.frame_type = Frame(self.window, borderwidth=5, relief="groove", bg="gray81", padx=30, pady=30)
-
-        self.label_title = Label(self.window, text="학생 경력 관리 시스템", font=("맑은 고딕", 30))
 
         # 학생, 교직원 선택 UI
         Label(self.frame_type, text="당신의 소속을 선택하세요.", font=self.font, bg="gray81").grid(row=0, column=0, columnspan=4)
@@ -66,7 +66,7 @@ class LoginUI:
         self._entry_register_pwd = Entry(self.frame_register_student, show='*', font=self.font)
         self._entry_student_id = Entry(self.frame_register_student, font=self.font)
         self._entry_student_name = Entry(self.frame_register_student, font=self.font)
-        self.btn_register = Button(self.frame_register_student, text="회원가입", command=self._click_register, height=2, bg='gray49', font=self.font)
+        self.btn_register = Button(self.frame_register_student, text="회원가입", command=self._click_register, bg='gray49', font=self.font)
 
         # 학생 회원가입란을 실제 배치하는 부분
         self._entry_register_id.grid(row=1, column=1)
@@ -96,46 +96,45 @@ class LoginUI:
         self.btn_register_faculty.grid(row=2, column=2, padx=3, rowspan=2)
 
     def start(self):
-        self.draw_title()
+        self._draw_main()
         self._draw_select_type()
 
-    def draw_title(self):
-        self.label_title.place(relx=0.5, rely=0.2, anchor=CENTER)
-
-    def erase_title(self):
-        self.label_title.place_forget()
-
-    def _draw_select_type(self):
-        self.frame_type.place(relx=0.5, rely=0.45, anchor=CENTER)
-
-    def select_student(self):
-        self._type_user = "student"
-        self.frame_type.place_forget()
-        self._draw_login()
-
-    def select_faculty(self):
-        self._type_user = "faculty"
-        self.frame_type.place_forget()
-        self._draw_login()
-
-    def _draw_login(self):
-        self.frame_login.place(relx=0.5, rely=0.45, anchor=CENTER)
-
-    def _draw_register(self):
-        if self._type_user == "student":
-            self.frame_register_student.place(relx=0.5, rely=0.45, anchor=CENTER)
+    def btn_back_handler(self):
+        if self.btn_back['text'] == "종료":
+            self.window.quit()
         else:
-            self.frame_register_faculty.place(relx=0.5, rely=0.45, anchor=CENTER)
+            if self._status == 1: # 로그인 화면
+                self._erase_login()
+                self._draw_select_type()
+            elif self._status == 2: # 회원가입 화면
+                self._erase_register()
+                self._draw_login()
 
-    def _click_create_account(self):
-        self._erase_login()
-        self._draw_register()
+    # 학생/교직원 선택 UI
+    def _draw_select_type(self):
+        self._status = 0
+        self.frame_type.place(relx=0.5, rely=0.55, anchor=CENTER)
+        self.btn_back.configure(text='종료')
+
+    # 로그인 화면 UI
+    def _draw_login(self):
+        self._status = 1
+        self.frame_login.place(relx=0.5, rely=0.55, anchor=CENTER)
+        self.btn_back.configure(text='뒤로가기')
 
     def _erase_login(self):
         print("erase_login 호출")
         self._entry_id.delete(0, END)
         self._entry_pwd.delete(0, END)
         self.frame_login.place_forget()
+
+    # 회원가입 화면 UI
+    def _draw_register(self):
+        self._status = 2
+        if self._type_user == "student":
+            self.frame_register_student.place(relx=0.5, rely=0.55, anchor=CENTER)
+        else:
+            self.frame_register_faculty.place(relx=0.5, rely=0.55, anchor=CENTER)
 
     def _erase_register(self):
         if self._type_user == "student":
@@ -151,6 +150,21 @@ class LoginUI:
             self._entry_register_faculty_name.delete(0, END)
             self._entry_register_faculty_department.delete(0, END)
             self.frame_register_faculty.place_forget()
+
+    # 버튼 처리
+    def select_student(self):
+        self._type_user = "student"
+        self.frame_type.place_forget()
+        self._draw_login()
+
+    def select_faculty(self):
+        self._type_user = "faculty"
+        self.frame_type.place_forget()
+        self._draw_login()
+
+    def _click_create_account(self):
+        self._erase_login()
+        self._draw_register()
 
     def _click_register(self):
         if not self._entry_register_id.get() or not self._entry_register_pwd.get() or not self._entry_student_id.get():
@@ -173,6 +187,8 @@ class LoginUI:
         if not self._entry_id.get() or not self._entry_pwd.get():
             messagebox.showerror(title="로그인 에러", message="입력란을 모두 채워주세요")
             return
+
+        self._erase_main()
 
         if self._type_user == "student":
             print(self._entry_id.get(), self._entry_pwd.get(), "학생임")
