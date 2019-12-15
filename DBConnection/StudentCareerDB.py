@@ -1,9 +1,10 @@
 import sqlite3
+import os
 
 class StudentCareerDB(object):
     conn = None
     cur = None
-    db_path = 'db/student_career.db'
+    db_path = os.path.abspath('../db/student_career.db')
 
 
     def __init__(self):

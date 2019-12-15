@@ -1,9 +1,10 @@
 import sqlite3
+import os
 
 class DocumentDB(object):
     conn = None
     cur = None
-    db_path = 'db/document.db'
+    db_path = os.path.abspath('../db/document.db')
 
 
     def __init__(self):
