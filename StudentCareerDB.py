@@ -3,8 +3,7 @@ import sqlite3
 class StudentCareerDB(object):
     conn = None
     cur = None
-    # TODO: HERE (학생경력, 졸업요건 DB설계, 커넥션 작성)
-    db_path = 'db/asdf.db'
+    db_path = 'db/student_career.db'
 
 
     def __init__(self):
@@ -14,3 +13,4 @@ class StudentCareerDB(object):
     def __del__(self):
         self.conn.close()
         
+    
