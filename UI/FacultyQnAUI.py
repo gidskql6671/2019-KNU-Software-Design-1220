@@ -2,11 +2,11 @@ from UI.UITemplate import *
 from UI import StudentMainUI
 
 
-class StudentQnAUI(UITemplate):
-    def __init__(self, window: Tk, font, student_main):
+class FacultyQnAUI(UITemplate):
+    def __init__(self, window: Tk, font, mainmenu_ui):
         super().__init__(window, font)
 
-        self._student_main = student_main
+        self._mainmenu_ui = mainmenu_ui
 
         self._setting_ui()
 
@@ -17,4 +17,5 @@ class StudentQnAUI(UITemplate):
         pass
 
     def btn_back_handler(self):
-        pass
+        self._erase_main()
+        self._mainmenu_ui.start()

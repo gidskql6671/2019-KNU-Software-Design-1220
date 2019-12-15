@@ -10,6 +10,7 @@ class LoginUI(UITemplate):
         self._type_user = None
         self._status = 0
         self._student_main_ui = StudentMainUI(window, font, self)
+        self._faculty_main_ui = FacultyMainUI(window, font, self)
 
         self._setting_ui()
 
@@ -123,7 +124,6 @@ class LoginUI(UITemplate):
         self.btn_back.configure(text='뒤로가기')
 
     def _erase_login(self):
-        print("erase_login 호출")
         self._entry_id.delete(0, END)
         self._entry_pwd.delete(0, END)
         self.frame_login.place_forget()
@@ -189,13 +189,12 @@ class LoginUI(UITemplate):
             return
 
         self._erase_main()
+        self._erase_login()
+        self.erase_title()
 
         if self._type_user == "student":
             print(self._entry_id.get(), self._entry_pwd.get(), "학생임")
-            self.erase_title()
-            self._erase_login()
             self._student_main_ui.start()
-            return
         else:
             print(self._entry_id.get(), self._entry_pwd.get(), "교직원임")
-            return
+            self._faculty_main_ui.start()

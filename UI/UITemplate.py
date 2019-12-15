@@ -14,6 +14,8 @@ class UITemplate:
         self.label_title = Label(self.window, text="학생 경력 관리 시스템", font=("맑은 고딕", 30), bg="gray86")
         self.btn_back = Button(self.frame_main, text="뒤로가기", font=("맑은 고딕", 12), command=self.btn_back_handler)
 
+        self.draw_btn_back()
+
     def draw_title(self):
         self.label_title.place(relx=0.5, rely=0.2, anchor=CENTER)
 
@@ -30,12 +32,13 @@ class UITemplate:
     def btn_back_handler(self):
         pass
 
+    def start(self):
+        self._draw_main()
+
     def _draw_main(self):
         self.draw_title()
         self.frame_main.pack(padx=30, pady=40, ipadx=20, ipady=20, anchor=CENTER, expand=True, fill="both")
-        self.draw_btn_back()
 
     def _erase_main(self):
         self.erase_title()
         self.frame_main.pack_forget()
-        self.erase_btn_back()
