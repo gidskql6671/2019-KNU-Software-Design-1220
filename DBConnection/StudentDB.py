@@ -1,6 +1,7 @@
 import sqlite3
 import os
 
+
 class StudentDB(object):
     conn = None
     cur = None
