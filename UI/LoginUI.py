@@ -2,7 +2,7 @@ from UI.UITemplate import *
 from UI.StudentMainUI import StudentMainUI
 from UI.FacultyMainUI import FacultyMainUI
 from UserAccount.Student import Student
-# from UserAccount.Faculty import Faculty
+from UserAccount.Faculty import Faculty
 
 
 class LoginUI(UITemplate):
@@ -106,10 +106,10 @@ class LoginUI(UITemplate):
         if self.btn_back['text'] == "종료":
             self.window.quit()
         else:
-            if self._status == 1: # 로그인 화면
+            if self._status == 1:  # 로그인 화면
                 self._erase_login()
                 self._draw_select_type()
-            elif self._status == 2: # 회원가입 화면
+            elif self._status == 2:  # 회원가입 화면
                 self._erase_register()
                 self._draw_login()
 
@@ -169,11 +169,11 @@ class LoginUI(UITemplate):
         self._draw_register()
 
     def _click_register(self):
-        if not self._entry_register_id.get() or not self._entry_register_pwd.get() or not self._entry_student_id.get():
-            messagebox.showerror(title="회원가입 에러", message="입력란을 모두 채워주세요")
-            return
-
         if self._type_user == "student":
+            if not self._entry_register_id.get() or not self._entry_register_pwd.get() or not self._entry_student_id.get():
+                messagebox.showerror(title="회원가입 에러", message="입력란을 모두 채워주세요")
+                return
+
             student_pd = Student()
             rad_var = self.radioVar_student.get()
             if rad_var == 1:  # 심컴
@@ -184,7 +184,17 @@ class LoginUI(UITemplate):
                                         self._entry_student_id.get(), self._entry_student_name.get(), "GlobalSWMajor", False)
             del student_pd
         else:
-            print("교직원")
+            if self._entry_register_faculty_department.get() and self._entry_register_faculty_name.get() and \
+                    self._entry_register_faculty_pwd.get() and self._entry_register_faculty_id.get() and \
+                    self._entry_register_faculty_num.get():
+                faculty_pd = Faculty()
+                faculty_pd.register_acc(self._entry_register_faculty_id.get(), self._entry_register_faculty_pwd.get(),
+                                        self._entry_register_faculty_num.get(), self._entry_register_faculty_name.get(),
+                                        self._entry_register_faculty_department.get())
+                del faculty_pd
+            else:
+                messagebox.showerror(title="회원가입 에러", message="입력란을 모두 채워주세요")
+                return
 
         self._erase_register()
         self._draw_login()
@@ -205,11 +215,11 @@ class LoginUI(UITemplate):
                 del pd_student
                 messagebox.showerror(title="로그인 에러", message="아이디 및 비밀번호가 틀렸습니다.")
         else:
-            #pd_faculty = Faculty()
-            #if pd_faculty.login(self._entry_id.get(), self._entry_pwd.get()):
-            self._erase_main()
-            self._erase_login()
-            self.erase_title()
-            self._faculty_main_ui.start()
-            #else:
-            #    messagebox.showerror(title="로그인 에러", message="아이디 및 비밀번호가 틀렸습니다.")
+            pd_faculty = Faculty()
+            if pd_faculty.login(self._entry_id.get(), self._entry_pwd.get()):
+                self._erase_main()
+                self._erase_login()
+                self.erase_title()
+                self._faculty_main_ui.start()
+            else:
+                messagebox.showerror(title="로그인 에러", message="아이디 및 비밀번호가 틀렸습니다.")

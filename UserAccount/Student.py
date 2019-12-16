@@ -7,17 +7,13 @@ class Student(UserAccount):
         super().__init__()
 
         self._user_DB = StudentDB()
-        self._user_info = None
-
-        self._user_id = ""
-        self._user_pw = ""
 
     def get_info(self):
         return self._user_info
 
     def login(self, input_id, input_pwd):
-
         self._user_info = self._user_DB.search((input_id, input_pwd))
+
         if not self._user_info:
             return False
         else:
