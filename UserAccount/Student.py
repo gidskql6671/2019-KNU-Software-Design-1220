@@ -1,6 +1,5 @@
-from DBConnection.StudentDB import *
-from UserAccount.UserAccount import UserAccount
-
+from DBConnection import StudentDB
+from UserAccount import UserAccount
 
 class Student(UserAccount):
     def __init__(self):

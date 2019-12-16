@@ -4,7 +4,7 @@ import os
 class FacultyDB(object):
     conn = None
     cur = None
-    db_path = os.path.abspath('../db/faculty.db')
+    db_path = os.path.abspath('db/faculty.db')
 
 
     def __init__(self):
