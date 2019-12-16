@@ -1,17 +1,12 @@
-from datetime import datetime
-
+from DBConnection import LectureDB
 
 class StdCareer:
 
     def __init__(self):
-        _now = datetime.now()
+        self._lecture_DB = LectureDB()
 
-
-class SbjCareer(StdCareer):
-    def __init__(self):
-        pass
-
-
+    # add...?
+"""
 class subject:
     def __init__(self, category, ID, name, grade):
         self._sub_category = category
@@ -19,6 +14,7 @@ class subject:
         self._sub_name = name
         self._sub_grade = grade
 
+# is_necessary, is_abeek
 
 class ABEEK_sub(subject):
     def __init__(self):
@@ -38,3 +34,5 @@ class EtcCareer(StdCareer):
 class Document:
     def __init__(self):
         pass
+
+"""
