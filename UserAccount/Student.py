@@ -1,5 +1,5 @@
-from StudentDB import StudentDB
-from UserAccount.UserAccount import UserAccount
+from DBConnection import StudentDB
+from UserAccount import UserAccount
 
 class Student(UserAccount):
 
