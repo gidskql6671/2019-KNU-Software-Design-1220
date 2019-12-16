@@ -1,13 +1,16 @@
 from DBConnection.StudentDB import StudentDB
 from UserAccount.UserAccount import UserAccount
 
-class Student(UserAccount):
 
+class Student(UserAccount):
     def __init__(self):
         super().__init__()
 
         self._user_DB = StudentDB()
         self._user_info = None
+
+        self._user_id = ""
+        self._user_pw = ""
 
     def get_info(self):
         return self._user_info
@@ -21,6 +24,7 @@ class Student(UserAccount):
             return True
 
     def register_acc(self, user_id, user_pw, student_id, name, major, is_abeek):
+        print((user_id, user_pw, student_id, name, major, is_abeek))
         self._user_DB.register((user_id, user_pw, student_id, name, major, is_abeek))
 
     def del_acc(self):

@@ -1,6 +1,8 @@
 from UI.UITemplate import *
-from UI.StudentMainUI import *
-from UI.FacultyMainUI import *
+from UI.StudentMainUI import StudentMainUI
+from UI.FacultyMainUI import FacultyMainUI
+from UserAccount.Student import Student
+# from UserAccount.Faculty import Faculty
 
 
 class LoginUI(UITemplate):
@@ -172,11 +174,15 @@ class LoginUI(UITemplate):
             return
 
         if self._type_user == "student":
+            student_pd = Student()
             rad_var = self.radioVar_student.get()
             if rad_var == 1:  # 심컴
-                print(self._entry_register_id.get(), self._entry_register_pwd.get(), self._entry_student_id.get(), "심컴")
+                student_pd.register_acc(self._entry_register_id.get(), self._entry_register_pwd.get(),
+                                        self._entry_student_id.get(), self._entry_student_name.get(), "DeepCseMajor", True)
             elif rad_var == 2:  # 글솦
-                print(self._entry_register_id.get(), self._entry_register_pwd.get(), self._entry_student_id.get(), "글솦")
+                student_pd.register_acc(self._entry_register_id.get(), self._entry_register_pwd.get(),
+                                        self._entry_student_id.get(), self._entry_student_name.get(), "GlobalSWMajor", False)
+            del student_pd
         else:
             print("교직원")
 
@@ -188,13 +194,22 @@ class LoginUI(UITemplate):
             messagebox.showerror(title="로그인 에러", message="입력란을 모두 채워주세요")
             return
 
-        self._erase_main()
-        self._erase_login()
-        self.erase_title()
-
         if self._type_user == "student":
-            print(self._entry_id.get(), self._entry_pwd.get(), "학생임")
-            self._student_main_ui.start()
+            pd_student = Student()
+            if pd_student.login(self._entry_id.get(), self._entry_pwd.get()):
+                self._erase_main()
+                self._erase_login()
+                self.erase_title()
+                self._student_main_ui.start()
+            else:
+                del pd_student
+                messagebox.showerror(title="로그인 에러", message="아이디 및 비밀번호가 틀렸습니다.")
         else:
-            print(self._entry_id.get(), self._entry_pwd.get(), "교직원임")
+            #pd_faculty = Faculty()
+            #if pd_faculty.login(self._entry_id.get(), self._entry_pwd.get()):
+            self._erase_main()
+            self._erase_login()
+            self.erase_title()
             self._faculty_main_ui.start()
+            #else:
+            #    messagebox.showerror(title="로그인 에러", message="아이디 및 비밀번호가 틀렸습니다.")
