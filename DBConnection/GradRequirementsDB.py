@@ -4,7 +4,7 @@ import os
 class GradRequirementsDB(object):
     conn = None
     cur = None
-    db_path = os.path.abspath('../db/grad_requirements.db')
+    db_path = os.path.abspath('db/grad_requirements.db')
 
 
     def __init__(self):

@@ -4,7 +4,7 @@ import os
 class StudentDB(object):
     conn = None
     cur = None
-    db_path = os.path.abspath('../db/student.db')
+    db_path = os.path.abspath('db/student.db')
 
 
     def __init__(self):

@@ -4,7 +4,7 @@ import os
 class BoardDB(object):
     conn = None
     cur = None
-    db_path = os.path.abspath('../db/board.db')
+    db_path = os.path.abspath('db/board.db')
 
 
     def __init__(self):
