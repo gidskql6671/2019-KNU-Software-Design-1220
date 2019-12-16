@@ -1,6 +1,6 @@
 from UI.UITemplate import *
-from UI.StudentMainUI import *
-from UI.FacultyMainUI import *
+from UI.StudentMainUI import StudentMainUI
+from UI.FacultyMainUI import FacultyMainUI
 from UserAccount.Student import Student
 # from UserAccount.Faculty import Faculty
 
@@ -177,10 +177,12 @@ class LoginUI(UITemplate):
             student_pd = Student()
             rad_var = self.radioVar_student.get()
             if rad_var == 1:  # 심컴
-                student_pd.register_acc(self._entry_register_id.get(), self._entry_register_pwd.get())
-                print(self._entry_register_id.get(), self._entry_register_pwd.get(), self._entry_student_id.get(), "심컴")
+                student_pd.register_acc(self._entry_register_id.get(), self._entry_register_pwd.get(),
+                                        self._entry_student_id.get(), self._entry_student_name.get(), "DeepCseMajor", True)
             elif rad_var == 2:  # 글솦
-                print(self._entry_register_id.get(), self._entry_register_pwd.get(), self._entry_student_id.get(), "글솦")
+                student_pd.register_acc(self._entry_register_id.get(), self._entry_register_pwd.get(),
+                                        self._entry_student_id.get(), self._entry_student_name.get(), "GlobalSWMajor", False)
+            del student_pd
         else:
             print("교직원")
 

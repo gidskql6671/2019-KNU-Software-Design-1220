@@ -24,6 +24,7 @@ class Student(UserAccount):
             return True
 
     def register_acc(self, user_id, user_pw, student_id, name, major, is_abeek):
+        print((user_id, user_pw, student_id, name, major, is_abeek))
         self._user_DB.register((user_id, user_pw, student_id, name, major, is_abeek))
 
     def del_acc(self):
