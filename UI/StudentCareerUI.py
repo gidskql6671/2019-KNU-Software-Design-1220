@@ -51,14 +51,23 @@ class StudentCareerUI(UITemplate):
         scrollbar["command"] = self._listbox.yview()
 
         frame_list.pack(side="left")
-        frame_info.pack(side="right")
+        frame_info.pack(side="right", padx=40)
+
+        Label(frame_info, text="항목", font=self.font, bg='gray81').grid(row=0, column=0, padx=10)
+        Label(frame_info, text="기준", font=self.font, bg='gray81').grid(row=1, column=0, padx=10, pady=10)
+        Label(frame_info, text="달성 정도", font=self.font, bg='gray81').grid(row=2, column=0, padx=10)
+        Label()
+
+
+        Button(frame_info, text="확인", font=self.font, bg='gray86', command=self._handler_info_ok).grid(row=3, column=0, pady=30)
+
 
     def start(self, info):
         self._student_info = info
-        print(info.get_id())
         self._subject = Subject(info.get_id())
-        self._etc = etc(info.get_id())
+        #self._etc = etc(info.get_id())
         self._status = 0
+        self._listbox.selection_set(0)
         self._draw_main()
 
     def btn_back_handler(self):
@@ -66,6 +75,9 @@ class StudentCareerUI(UITemplate):
         del self._etc
         self._erase_main()
         self.student_main.start(self._student_info)
+
+    def _handler_info_ok(self):
+        pass
 
     def get_gr_list(self):
         # 테스트 용
