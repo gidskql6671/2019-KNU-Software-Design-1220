@@ -41,15 +41,13 @@ class StudentGRUI(UITemplate):
                 self.text.insert(CURRENT, self._gr_list[list_index][2])
                 self.text.configure(state='disabled')
             else:
-                value = "원하는 항목을 선택하세요."
                 self.text.configure(state='normal')
                 self.text.delete('1.0', END)
-                self.text.insert('1.0', value)
+                self.text.insert('1.0', "원하는 항목을 선택하세요.")
                 self.text.configure(state='disabled')
 
         self._listbox.bind("<<ListboxSelect>>", cur_select)
-
-        for index in range(0, 10):
+        for index in range(0, len(self._gr_list)):
             self._listbox.insert(index, self._gr_list[index][0] + " " + self._gr_list[index][1])
 
         self._scrollbar["command"] = self._listbox.yview()
@@ -57,12 +55,22 @@ class StudentGRUI(UITemplate):
         self.frame_list.pack(side="left")
         self.frame_info.pack(side="right", padx=40)
 
+    def start(self):
+        self.get_gr_list()
+        self._listbox.select_clear(0, END)
+        self.text.configure(state='normal')
+        self.text.delete('1.0', END)
+        self.text.insert('1.0', "원하는 항목을 선택하세요.")
+        self.text.configure(state='disabled')
+        self._draw_main()
+
     def btn_back_handler(self):
         self._erase_main()
         self.mainmenu_ui.start()
 
     # 졸업요건 클래스를 통해 졸업요건 리스트를 받아옴.
     def get_gr_list(self):
+        self._gr_list.clear()
         # 테스트 용
         for i in range(0, 10):
             self._gr_list.append([])

@@ -1,5 +1,3 @@
-import StudentDB
-
 class UserAccount:
 
     def __init__(self, user_id, user_pw):
