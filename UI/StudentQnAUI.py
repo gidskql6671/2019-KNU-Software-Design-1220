@@ -1,5 +1,6 @@
 from UI.UITemplate import *
-from UI import StudentMainUI
+from UI.StudentMainUI import *
+from UserAccount.Student import Student
 
 
 class StudentQnAUI(UITemplate):
@@ -7,9 +8,9 @@ class StudentQnAUI(UITemplate):
         super().__init__(window, font)
 
         self._status = 0
-        self._mainmenu_ui = student_main
+        self._mainmenu_ui: StudentMainUI = student_main
         self._list_index = 0
-
+        self._student_info: Student = None
 
         self._setting_ui()
 
@@ -32,13 +33,14 @@ class StudentQnAUI(UITemplate):
 
         frame_list.place(relx=0.5, rely=0.5, anchor="center")
 
-    def start(self):
+    def start(self, info):
+        self._student_info = info
         self._status = 0
         self._draw_main()
 
     def btn_back_handler(self):
         if self._status == 0:
             self._erase_main()
-            self._mainmenu_ui.start()
-        elif self._status == 1: # 게시물 띄웠을 떄
+            self._mainmenu_ui.start(self._student_info)
+        elif self._status == 1:  # 게시물 띄웠을 떄
             pass

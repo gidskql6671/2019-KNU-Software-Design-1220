@@ -1,5 +1,6 @@
 from UI.UITemplate import *
-from UI.LoginUI import *
+from UI.FacultyMainUI import *
+from UserAccount.Faculty import Faculty
 
 
 class FacultyGRUI(UITemplate):
@@ -11,6 +12,7 @@ class FacultyGRUI(UITemplate):
         self._mainmenu_ui = mainmenu_ui
         self._gr = None  # 졸업요건 클래스가 들어갈거다.
         self._gr_list = []
+        self._faculty_info: Faculty = None
 
         self._entry_edit_name: Entry = None
         self._entry_edit_des: Entry = None
@@ -120,13 +122,13 @@ class FacultyGRUI(UITemplate):
     def btn_back_handler(self):
         if self._status == 0:
             self._erase_main()
-            self._mainmenu_ui.start()
+            self._mainmenu_ui.start(self._faculty_info)
         elif self._status == 1:
             self._erase_add_main()
-            self.start()
+            self.start(self._faculty_info)
         else:
             self._erase_edit_main()
-            self.start()
+            self.start(self._faculty_info)
 
     def get_gr_list(self):
         # 테스트 용
@@ -175,7 +177,7 @@ class FacultyGRUI(UITemplate):
         self.text.configure(state='disabled')
 
         self._erase_add_main()
-        self.start()
+        self.start(self._faculty_info)
 
     def handler_edit_ok(self):
         if not self._entry_edit_name.get() or not self._entry_edit_name.get():
@@ -195,7 +197,7 @@ class FacultyGRUI(UITemplate):
         self.text.configure(state='disabled')
 
         self._erase_edit_main()
-        self.start()
+        self.start(self._faculty_info)
 
     def handler_add(self):
         self._erase_main()
@@ -241,7 +243,8 @@ class FacultyGRUI(UITemplate):
 
         # GR 클래스에 삭제 요청을 보낸다
 
-    def start(self):
+    def start(self, info):
+        self._faculty_info = info
         self._status = 0
         self._listbox.select_clear(0, END)
         self.text.configure(state='normal')

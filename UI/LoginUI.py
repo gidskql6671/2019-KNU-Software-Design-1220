@@ -85,7 +85,7 @@ class LoginUI(UITemplate):
         Label(self.frame_register_faculty, text="이름", font=self.font, bg="gray81").grid(row=4, column=0)
         Label(self.frame_register_faculty, text="부서", font=self.font, bg="gray81").grid(row=5, column=0)
         self._entry_register_faculty_id = Entry(self.frame_register_faculty, font=self.font)
-        self._entry_register_faculty_pwd = Entry(self.frame_register_faculty, font=self.font)
+        self._entry_register_faculty_pwd = Entry(self.frame_register_faculty, show='*', font=self.font)
         self._entry_register_faculty_num = Entry(self.frame_register_faculty, font=self.font)
         self._entry_register_faculty_name = Entry(self.frame_register_faculty, font=self.font)
         self._entry_register_faculty_department = Entry(self.frame_register_faculty, font=self.font)
@@ -199,6 +199,8 @@ class LoginUI(UITemplate):
         self._erase_register()
         self._draw_login()
 
+        messagebox.showinfo(title="회원가입 성공", message="회원가입이 성공했습니다.")
+
     def _click_login(self):
         if not self._entry_id.get() or not self._entry_pwd.get():
             messagebox.showerror(title="로그인 에러", message="입력란을 모두 채워주세요")
@@ -210,7 +212,7 @@ class LoginUI(UITemplate):
                 self._erase_main()
                 self._erase_login()
                 self.erase_title()
-                self._student_main_ui.start()
+                self._student_main_ui.start(pd_student)
             else:
                 del pd_student
                 messagebox.showerror(title="로그인 에러", message="아이디 및 비밀번호가 틀렸습니다.")
@@ -220,6 +222,6 @@ class LoginUI(UITemplate):
                 self._erase_main()
                 self._erase_login()
                 self.erase_title()
-                self._faculty_main_ui.start()
+                self._faculty_main_ui.start(pd_faculty)
             else:
                 messagebox.showerror(title="로그인 에러", message="아이디 및 비밀번호가 틀렸습니다.")

@@ -1,5 +1,6 @@
 from UI.UITemplate import *
-from UI import StudentMainUI
+from UI.FacultyMainUI import *
+from UserAccount.Faculty import Faculty
 
 
 class FacultyQnAUI(UITemplate):

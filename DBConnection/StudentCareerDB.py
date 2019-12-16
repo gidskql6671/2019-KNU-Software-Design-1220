@@ -35,7 +35,7 @@ class StudentCareerDB(object):
     # 학번으로 교과경력 전체 조회
     # 인자로 student_id를 주면 그 학생의 교과경력을 튜플의 리스트로 모두 가져옴
     def list_lecture_career(self, student_id: str):
-        self.cur.execute('SELECT * FROM lecture_career WHERE student_id=?', (student_id))
+        self.cur.execute('SELECT * FROM lecture_career WHERE student_id=?', (student_id,))
         data = self.cur.fetchall()
         self.conn.commit()
         return data

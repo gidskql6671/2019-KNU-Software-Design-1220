@@ -1,5 +1,6 @@
 from UI.UITemplate import *
-from UI.LoginUI import *
+from UI.StudentMainUI import *
+from UserAccount.Student import Student
 
 
 class StudentGRUI(UITemplate):
@@ -9,6 +10,7 @@ class StudentGRUI(UITemplate):
         self.mainmenu_ui = mainmenu_ui
         self._gr_class = None  # 졸업요건 클래스가 들어갈거다.
         self._gr_list = []
+        self._student_info: Student = None
 
         self.get_gr_list()
 
@@ -55,8 +57,9 @@ class StudentGRUI(UITemplate):
         self.frame_list.pack(side="left")
         self.frame_info.pack(side="right", padx=40)
 
-    def start(self):
+    def start(self, info):
         self.get_gr_list()
+        self._student_info = info
         self._listbox.select_clear(0, END)
         self.text.configure(state='normal')
         self.text.delete('1.0', END)
@@ -66,7 +69,7 @@ class StudentGRUI(UITemplate):
 
     def btn_back_handler(self):
         self._erase_main()
-        self.mainmenu_ui.start()
+        self.mainmenu_ui.start(self._student_info)
 
     # 졸업요건 클래스를 통해 졸업요건 리스트를 받아옴.
     def get_gr_list(self):

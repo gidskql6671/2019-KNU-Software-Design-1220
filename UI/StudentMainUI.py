@@ -1,7 +1,7 @@
 from UI.UITemplate import *
-from UI.StudentQnAUI import *
-from UI.StudentGRUI import *
-from UI.StudentCareerUI import *
+from UI.StudentQnAUI import StudentQnAUI
+from UI.StudentGRUI import StudentGRUI
+from UI.StudentCareerUI import StudentCareerUI
 from UI.LoginUI import *
 
 
@@ -13,6 +13,7 @@ class StudentMainUI(UITemplate):
         self._gr_ui = StudentGRUI(window, font, self)
         self._student_career_ui = StudentCareerUI(window, font, self)
         self._qna_ui = StudentQnAUI(window, font, self)
+        self._student_info = None
 
         self._setting_ui()
 
@@ -25,19 +26,24 @@ class StudentMainUI(UITemplate):
 
         self.btn_back.configure(text='로그아웃')
 
+    def start(self, student_info):
+        self._student_info = student_info
+        self._draw_main()
+
     def btn_back_handler(self):
         self._erase_main()
+        del self._student_info
         self._login_ui.start()
 
     def _start_stand(self):
         self._erase_main()
-        self._gr_ui.start()
+        self._gr_ui.start(self._student_info)
 
     def _start_career(self):
         self._erase_main()
-        self._student_career_ui.start()
+        self._student_career_ui.start(self._student_info)
 
     def _start_qna(self):
         self._erase_main()
-        self._qna_ui.start()
+        self._qna_ui.start(self._student_info)
         pass

@@ -1,7 +1,8 @@
 from UI.UITemplate import *
-from UI.FacultyGRUI import *
-from UI.FacultyQnAUI import *
+from UI.FacultyGRUI import FacultyGRUI
+from UI.FacultyQnAUI import FacultyQnAUI
 from UI.LoginUI import *
+from UserAccount.Faculty import Faculty
 
 
 class FacultyMainUI(UITemplate):
@@ -11,6 +12,7 @@ class FacultyMainUI(UITemplate):
         self._login_ui: LoginUI = login_ui
         self._gr_ui = FacultyGRUI(window, font, self)
         self._qna_ui = FacultyQnAUI(window, font, self)
+        self._faculty_info: Faculty = None
 
         self._setting_ui()
 
@@ -22,13 +24,18 @@ class FacultyMainUI(UITemplate):
 
         self.btn_back.configure(text='로그아웃')
 
+    def start(self, info):
+        self._faculty_info = info
+        self._draw_main()
+
     def btn_back_handler(self):
         self._erase_main()
+        del self._faculty_info
         self._login_ui.start()
 
     def _start_stand(self):
         self._erase_main()
-        self._gr_ui.start()
+        self._gr_ui.start(self)
 
     def _start_qna(self):
         # self._erase_main()

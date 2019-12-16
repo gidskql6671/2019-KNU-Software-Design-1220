@@ -11,6 +11,9 @@ class Student(UserAccount):
     def get_info(self):
         return self._user_info
 
+    def get_id(self):
+        return self._user_info[2]
+
     def login(self, input_id, input_pwd):
         self._user_info = self._user_DB.search((input_id, input_pwd))
 
