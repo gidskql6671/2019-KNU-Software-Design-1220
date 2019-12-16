@@ -11,7 +11,7 @@ class QuestBoard:
 
     def make_quest(self):
         B_DB = BoardDB()
-        self._QuestID = B_DB.new_question(self._QuestAuthor, self._QuestTitle, self._QuestContent)
+        self._QuestID = B_DB.new_question((self._QuestAuthor, self._QuestTitle, self._QuestContent))
 
     def edit_quest(self, newTitle, newContent):
         B_DB = BoardDB()

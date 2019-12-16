@@ -3,32 +3,26 @@ from UserAccount.UserAccount import UserAccount
 
 class Student(UserAccount):
 
-    def __init__(self, user_id, user_pw):
-        self._user_id = user_id
-        self._user_pw = user_pw
-        self._std_id = ""
-        self._name = ""
-        self._major = ""
-        self._is_ABEEK = 0
+    def __init__(self):
+        self._user_DB = StudentDB()
+        self._user_info = None
 
-    def get_info(self, user_id, user_pw, std_id, name, major, is_ABEEK):
-        self._user_id = user_id
-        self._user_pw = user_pw
-        self._std_id = std_id
-        self._name = name
-        self._major = major
-        self._is_ABEEK = is_ABEEK
+    def get_info(self):
+        return self._user_info
 
     def login( self, input_id, input_pwd ):
-        user_DB = StudentDB()
-        # account exists => return True
-        if user_DB.search((input_id, input_pwd)):
-            return True
-        # account doesn't exist => return True
-        # login() == F 일 경우 self.get_info( , , , , , , )로 전체 사용자 정보 받아오고 register로 등록
-        # user_DB.register((self._user_id, self._user_pw, self._std_id, self._name, self._major, self._is_ABEEK))
-        else:
+
+        self._user_info = self._user_DB.search((input_id, input_pwd))
+        if None:
             return False
+        else:
+            return True
+
+    def register_acc(self, user_id, user_pw, student_id, name, major, is_abeek):
+        self._user_DB.register((user_id, user_pw, student_id, name, major, is_abeek))
+
+    def del_acc(self, user_id, user_pw):
+        self._user_DB.delete((self._user_id, self._user_pw))
 
     def get_abeek(self):
         return self._is_ABEEK
