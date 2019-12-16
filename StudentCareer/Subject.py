@@ -1,21 +1,37 @@
-import StudentCareer
+from StudentCareer.StudentCareer import StdCareer
+import random
+from datetime import datetime
 
+class Subject(StdCareer):
 
-class Subject(StudentCareer):
-    def __init__(self):
-        #list_lecture로 값 받아옴
-        self._data = None
+    # id에 맞는 강의 리스트를 받아서 _career에 저장
+    def __init__(self, id):
+        super().__init__()
+        self._id = id
+        self._career = self._career_DB.list_lecture_career(id)
 
-    def add_lecture(self, code, type, name, point, is_necessary, is_abeek):
-        self._lecture_DB.new_lecture((code, type, name, point, is_necessary, is_abeek))
+    # update value. _career가 존재하면 value, date 수정, 없으면 새로 만든다.
+    def update_value(self, name, value):
+        if self._career:
+            for i in range(0, len(self._career)):
+                if self._career[i][2] == name:
+                    self._temp = list(self._career[i])
+                    self._temp[3] = value
+                    self._temp[4] = datetime.now()
+                    self._career[i] = tuple(self._temp)
+                    self._career_DB.edit_lecture_career(self._career[i])
+                    return
+        else:
+            self._temp = (self._id, random.randint(0, 10000), name, value, datetime.now())
+            self._career_DB.new_lecture_career(self._temp)
 
-    def search(self, code):
-        self._data = self._lecture_DB.search_lecture(code)
-        return self._data
+    # category : ABEEK 기본, ABEEK 전공, ABEEK 공학, 영어 성적, 현장 실습 등...
+    def search_value(self, category):
+        for i in range(0, len(self._career)):
+            if self._career[i][2] == category:
+                _data = self._career[i][3]
+        return _data
 
     # update value
-    # for i in range(0, len(career))
-       # if(carreer[i][2] == name)
-    # 이름 같으면
-
     # return category value
+    #    졸업 요건 항목 중 하나를 입력하면 그 밸류를 반환.

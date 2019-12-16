@@ -1,5 +1,5 @@
-from DBConnection import FacultyDB
-from UserAccount import UserAccount
+from DBConnection.FacultyDB import FacultyDB
+from UserAccount.UserAccount import UserAccount
 
 
 class Faculty(UserAccount):
