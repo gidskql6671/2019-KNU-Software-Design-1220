@@ -6,14 +6,12 @@ class GradRequirementsDB(object):
     cur = None
     db_path = os.path.abspath('db/grad_requirements.db')
 
-
     def __init__(self):
         self.conn = sqlite3.connect(self.db_path)
         self.cur = self.conn.cursor()
 
     def __del__(self):
         self.conn.close()
-    
 
     # grad_requirements table 구성 설명:
     # major : 전공 (DeepCseMajor / GlobalSWMajor / LinkedMajor / 융합전공 / 복수전공 / 부전공)

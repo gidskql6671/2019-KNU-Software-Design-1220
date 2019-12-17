@@ -1,17 +1,29 @@
+from DBConnection import GradRequirementsDB
+
 class GradRequirement:
 
-    def __init__(self, total_credits, if_docsubmit,majorname):
-        self.total_credits = total_credits
-        self.if_docsubmit = if_docsubmit
-        # self.majorname = majorname
+    def __init__(self, major,sub_major):
+        self.GradRequirmentDB = GradRequirementsDB
+        self.total_credits
+        self.if_docsubmit =if_docsubmit
+        self.major =major
+        self.sub_major = sub_major
+        self.field
+        self.field_name
+        self.value
+        self.description
+
 
     #디비에 해당 학과의 졸업 요건 추가
-    def add_requirement(self):
-        pass
+    def new_requirement(self):
+        GradRequirementsDB.new_requirement(self.major,self.sub_major,self.field,self.field_name,self.value,self.description)
+
     #디비에 해당 학과의 졸업요건 변경
-    def update_requirment(self):
-        pass
+    def edit_requirement(self):
+        GradRequirementsDB.edit_requirement(self.major,self.sub_major,self.field,self.field_name,self.value,self.description)
+
     #디비에 해당 학과의 졸업요건 삭제
     def del_requirment(self):
-        pass
+        GradRequirementsDB.delete_requirement(self.major,self.sub_major,self.field)
+
 
