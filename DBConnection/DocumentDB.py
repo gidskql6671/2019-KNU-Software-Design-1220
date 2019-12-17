@@ -44,6 +44,6 @@ class DocumentDB(object):
     # 증빙서류 삭제
     # 인자로 code를 주면 그 행 삭제
     def delete_document(self, code: str):
-        self.cur.execute('DELETE * FROM document WHERE code=?', (code))
+        self.cur.execute('DELETE FROM document WHERE code=?', (code))
         self.conn.commit()
 

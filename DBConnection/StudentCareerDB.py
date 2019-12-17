@@ -51,7 +51,7 @@ class StudentCareerDB(object):
     # 교과경력 삭제
     # 인자로 career_code를 주면 그 행 삭제
     def delete_lecture_career(self, career_code: str):
-        self.cur.execute('DELETE * FROM lecture_career WHERE career_code=?', (career_code,))
+        self.cur.execute('DELETE FROM lecture_career WHERE career_code=?', (career_code,))
         self.conn.commit()
 
     #############################################################
@@ -101,6 +101,6 @@ class StudentCareerDB(object):
     # 비교과경력 삭제
     # 인자로 career_code를 주면 그 행 삭제
     def delete_nonlecture_career(self, career_code: str):
-        self.cur.execute('DELETE * FROM nonlecture_career WHERE career_code=?', (career_code,))
+        self.cur.execute('DELETE FROM nonlecture_career WHERE career_code=?', (career_code,))
         self.conn.commit()
 
