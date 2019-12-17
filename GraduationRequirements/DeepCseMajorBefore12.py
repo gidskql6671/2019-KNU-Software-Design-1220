@@ -1,5 +1,5 @@
 from GraduationRequirements import DeepCseMajor
-from DBConnection import GradRequirementsDB
+from DBConnection.GradRequirementsDB import GradRequirementsDB
 
 class DeepCseMajorBefore12(DeepCseMajor):
 
