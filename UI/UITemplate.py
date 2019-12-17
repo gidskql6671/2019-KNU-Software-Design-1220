@@ -32,9 +32,6 @@ class UITemplate:
     def btn_back_handler(self):
         pass
 
-    def start(self):
-        self._draw_main()
-
     def _draw_main(self):
         self.draw_title()
         self.frame_main.pack(padx=30, pady=40, ipadx=20, ipady=20, anchor=CENTER, expand=True, fill="both")

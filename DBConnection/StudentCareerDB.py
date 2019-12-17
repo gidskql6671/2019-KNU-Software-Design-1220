@@ -27,7 +27,7 @@ class StudentCareerDB(object):
     # 교과경력 조회
     # 인자로 career_code를 주면 그 행 5개 항목을 튜플로 가져옴
     def search_lecture_career(self, career_code: str):
-        self.cur.execute('SELECT * FROM lecture_career WHERE career_code=?', (career_code))
+        self.cur.execute('SELECT * FROM lecture_career WHERE career_code=?', (career_code,))
         data = self.cur.fetchone()
         self.conn.commit()
         return data
@@ -35,7 +35,7 @@ class StudentCareerDB(object):
     # 학번으로 교과경력 전체 조회
     # 인자로 student_id를 주면 그 학생의 교과경력을 튜플의 리스트로 모두 가져옴
     def list_lecture_career(self, student_id: str):
-        self.cur.execute('SELECT * FROM lecture_career WHERE student_id=?', (student_id))
+        self.cur.execute('SELECT * FROM lecture_career WHERE student_id=?', (student_id,))
         data = self.cur.fetchall()
         self.conn.commit()
         return data
@@ -45,13 +45,13 @@ class StudentCareerDB(object):
     # career_code로 행을 찾아서 그 행을 주어진 정보로 전체 업데이트함
     def edit_lecture_career(self, args: tuple):
         (student_id, career_code, type_name, value, date) = args
-        self.cur.execute(f'UPDATE lecture_career SET student_id={student_id}, type_name={type_name}, value={value}, date={date} WHERE career_code=?', (career_code))
+        self.cur.execute(f'UPDATE lecture_career SET student_id={student_id}, type_name={type_name}, value={value}, date={date} WHERE career_code=?', (career_code,))
         self.conn.commit()
     
     # 교과경력 삭제
     # 인자로 career_code를 주면 그 행 삭제
     def delete_lecture_career(self, career_code: str):
-        self.cur.execute('DELETE * FROM lecture_career WHERE career_code=?', (career_code))
+        self.cur.execute('DELETE * FROM lecture_career WHERE career_code=?', (career_code,))
         self.conn.commit()
 
     #############################################################
@@ -69,7 +69,7 @@ class StudentCareerDB(object):
     # 비교과경력 조회
     # 인자로 career_code를 주면 그 행 6개 항목을 튜플로 가져옴
     def search_nonlecture_career(self, career_code: str):
-        self.cur.execute('SELECT * FROM nonlecture_career WHERE career_code=?', (career_code))
+        self.cur.execute('SELECT * FROM nonlecture_career WHERE career_code=?', (career_code,))
         data = self.cur.fetchone()
         self.conn.commit()
         return data
@@ -77,7 +77,7 @@ class StudentCareerDB(object):
     # 학번으로 비교과경력 전체 조회
     # 인자로 student_id를 주면 그 학생의 교과경력을 튜플의 리스트로 모두 가져옴
     def list_nonlecture_career(self, student_id: str):
-        self.cur.execute('SELECT * FROM nonlecture_career WHERE student_id=?', (student_id))
+        self.cur.execute('SELECT * FROM nonlecture_career WHERE student_id=?', (student_id,))
         data = self.cur.fetchall()
         self.conn.commit()
         return data
@@ -95,12 +95,12 @@ class StudentCareerDB(object):
     # career_code로 행을 찾아서 그 행을 주어진 정보로 전체 업데이트함
     def edit_nonlecture_career(self, args: tuple):
         (student_id, career_code, expire_date, field, value, date) = args
-        self.cur.execute(f'UPDATE nonlecture_career SET student_id={student_id}, expire_date={expire_date}, field={field}, value={value}, date={date} WHERE career_code=?', (career_code))
+        self.cur.execute(f'UPDATE nonlecture_career SET student_id={student_id}, expire_date={expire_date}, field={field}, value={value}, date={date} WHERE career_code=?', (career_code,))
         self.conn.commit()
     
     # 비교과경력 삭제
     # 인자로 career_code를 주면 그 행 삭제
     def delete_nonlecture_career(self, career_code: str):
-        self.cur.execute('DELETE * FROM nonlecture_career WHERE career_code=?', (career_code))
+        self.cur.execute('DELETE * FROM nonlecture_career WHERE career_code=?', (career_code,))
         self.conn.commit()
 

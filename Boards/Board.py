@@ -1,4 +1,4 @@
-from DBConnection import BoardDB
+from DBConnection.BoardDB import BoardDB
 
 
 class QuestBoard:
