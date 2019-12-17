@@ -39,5 +39,5 @@ class FacultyDB(object):
     # 교직원 계정 탈퇴 (계정 정보만 삭제)
     # args로 (user_id, user_pw) tuple을 주면, 해당 행을 삭제
     def delete(self, args: tuple):
-        self.cur.execute('DELETE * FROM faculty WHERE id=? AND password=?', args)
+        self.cur.execute('DELETE FROM faculty WHERE id=? AND password=?', args)
         self.conn.commit()

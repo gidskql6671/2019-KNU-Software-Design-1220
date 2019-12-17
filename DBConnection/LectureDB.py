@@ -42,5 +42,5 @@ class LectureDB(object):
     # 교과목 삭제하기
     # 인자로 과목코드를 주면 해당 과목 삭제
     def delete(self, code: str):
-        self.cur.execute('DELETE * FROM lecture WHERE code=?', (code))
+        self.cur.execute('DELETE FROM lecture WHERE code=?', (code))
         self.conn.commit()

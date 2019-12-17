@@ -87,5 +87,5 @@ class BoardDB(object):
     # 질문 삭제하기
     # 인자로 삭제할 질문 id 입력
     def delete_answer(self, id: int):
-        self.cur.execute('DELETE * FROM answer WHERE id=?', (id))
+        self.cur.execute('DELETE FROM answer WHERE id=?', (id))
         self.conn.commit()

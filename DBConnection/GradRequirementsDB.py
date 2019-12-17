@@ -61,7 +61,7 @@ class GradRequirementsDB(object):
     # 졸업요건 항목 삭제하기
     # args : (major, sub_major, type, field)
     def delete_requirement(self, args: tuple):
-        self.cur.execute('DELETE * FROM grad_requirements WHERE major=? AND sub_major=? AND type=? AND field=?', args)
+        self.cur.execute('DELETE FROM grad_requirements WHERE major=? AND sub_major=? AND type=? AND field=?', args)
         self.conn.commit()
 
     
