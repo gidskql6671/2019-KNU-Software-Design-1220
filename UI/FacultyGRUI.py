@@ -1,7 +1,7 @@
 from UI.UITemplate import *
 from UI.FacultyMainUI import *
 from UserAccount.Faculty import Faculty
-
+from GraduationRequirements.DeepCseMajorAfter12 import DeepCseMajorAfter12
 
 class FacultyGRUI(UITemplate):
     def __init__(self, window: Tk, font, mainmenu_ui):
@@ -10,6 +10,8 @@ class FacultyGRUI(UITemplate):
         self._add_status = 0
         self._status = 0
         self._mainmenu_ui = mainmenu_ui
+
+        self._select_type = ""
         self._gr = None  # 졸업요건 클래스가 들어갈거다.
         self._gr_list = []
         self._faculty_info: Faculty = None
@@ -25,6 +27,29 @@ class FacultyGRUI(UITemplate):
 
     def _setting_ui(self):
         super()._setting_ui()
+
+        self.frame_select = Frame(self.window, borderwidth=2, relief="groove", bg="gray86", padx=10, pady=10)
+        Label(self.frame_select, text="학생 경력 관리 시스템", font=("맑은 고딕", 30), bg="gray86").pack(pady=30)
+        frame_select_sub = Frame(self.frame_select, borderwidth=5, relief="groove", bg="gray81", padx=30, pady=30)
+        Label(frame_select_sub, text="수정 및 조회하고 싶은 전공을 선택하세요", bg="gray81", font=self.font)\
+            .grid(column=0, row=0, columnspan=3, pady=10)
+
+        def select_btn_handler(select_type):
+            self._select_type = select_type
+            self._erase_select_main()
+            self._status = 1
+            print(self._select_type)
+            self._draw_main()
+
+        Button(frame_select_sub, text="심화컴퓨터", bg="gray86", font=self.font,
+               command=lambda: select_btn_handler("심화컴퓨터")).grid(column=0, row=1, pady=20)
+        Button(frame_select_sub, text="글로벌소프트웨어", bg="gray86", font=self.font,
+               command=lambda: select_btn_handler("글로벌소프트웨어")).grid(column=1, row=1, padx=10)
+        Button(frame_select_sub, text="SW 연계/융합전공", bg="gray86", font=self.font,
+               command=lambda: select_btn_handler("SW 연계/융합전공")).grid(column=2, row=1)
+        Button(self.frame_select, text="뒤로가기", font=("맑은 고딕", 12), command=self.btn_back_handler)\
+            .pack(side="left",anchor="s")
+        frame_select_sub.place(relx=0.5, rely=0.65, anchor="center")
 
         self.frame_info = Frame(self.frame_main, borderwidth=2, relief="groove", bg="gray81", padx=10, pady=10)
         self.frame_list = Frame(self.frame_main, borderwidth=2, relief="groove", bg="gray81", padx=10, pady=10)
@@ -121,14 +146,20 @@ class FacultyGRUI(UITemplate):
 
     def btn_back_handler(self):
         if self._status == 0:
-            self._erase_main()
+            self._erase_select_main()
             self._mainmenu_ui.start(self._faculty_info)
         elif self._status == 1:
+            self._erase_main()
+            self._status = 0
+            self._draw_select_main()
+        elif self._status == 2:
             self._erase_add_main()
-            self.start(self._faculty_info)
+            self._status = 1
+            self._draw_main()
         else:
             self._erase_edit_main()
-            self.start(self._faculty_info)
+            self._status = 1
+            self._draw_main()
 
     def get_gr_list(self):
         # 테스트 용
@@ -144,6 +175,12 @@ class FacultyGRUI(UITemplate):
             self._listbox.insert(index, self._gr_list[index][0] + " " + self._gr_list[index][1])
 
         # pd 영역에 보내줘야함.
+
+    def _draw_select_main(self):
+        self.frame_select.pack(padx=30, pady=40, ipadx=20, ipady=20, anchor=CENTER, expand=True, fill="both")
+
+    def _erase_select_main(self):
+        self.frame_select.pack_forget()
 
     def _draw_add_main(self):
         self.frame_add_main.pack(padx=30, pady=40, ipadx=20, ipady=20, anchor=CENTER, expand=True, fill="both")
@@ -177,7 +214,9 @@ class FacultyGRUI(UITemplate):
         self.text.configure(state='disabled')
 
         self._erase_add_main()
-        self.start(self._faculty_info)
+
+        self._status = 0
+        self._draw_add_main()
 
     def handler_edit_ok(self):
         if not self._entry_edit_name.get() or not self._entry_edit_name.get():
@@ -197,16 +236,25 @@ class FacultyGRUI(UITemplate):
         self.text.configure(state='disabled')
 
         self._erase_edit_main()
-        self.start(self._faculty_info)
+        self._status = 0
+        self._draw_main()
 
     def handler_add(self):
         self._erase_main()
         self._status = 1
         self._add_status = 0
+
         self._entry_add_name.delete(0, END)
         self._entry_add_des.delete(0, END)
         self._text_add_des.delete("1.0", END)
         self._text_add_des.insert("1.0", "상세한 설명을 적어주세요.(선택 사항)")
+
+        self._listbox.select_clear(0, END)
+        self.text.configure(state='normal')
+        self.text.delete('1.0', END)
+        self.text.insert('1.0', "원하는 항목을 선택하세요.")
+        self.text.configure(state='disabled')
+
         self._draw_add_main()
 
     def handler_edit(self):
@@ -224,6 +272,12 @@ class FacultyGRUI(UITemplate):
         self._entry_edit_des.insert(0, self._gr_list[self._edit_index][1])
         self._text_edit_des.delete("1.0", END)
         self._text_edit_des.insert("1.0", self._gr_list[self._edit_index][2])
+
+        self._listbox.select_clear(0, END)
+        self.text.configure(state='normal')
+        self.text.delete('1.0', END)
+        self.text.insert('1.0', "원하는 항목을 선택하세요.")
+        self.text.configure(state='disabled')
 
         self._draw_edit_main()
 
@@ -245,10 +299,14 @@ class FacultyGRUI(UITemplate):
 
     def start(self, info):
         self._faculty_info = info
+
         self._status = 0
+
         self._listbox.select_clear(0, END)
+
         self.text.configure(state='normal')
         self.text.delete('1.0', END)
         self.text.insert('1.0', "원하는 항목을 선택하세요.")
         self.text.configure(state='disabled')
-        self._draw_main()
+
+        self._draw_select_main()

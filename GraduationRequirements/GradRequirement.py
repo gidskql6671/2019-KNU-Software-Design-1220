@@ -1,13 +1,13 @@
-from DBConnection import GradRequirementsDB
+from DBConnection.GradRequirementsDB import GradRequirementsDB
 
 class GradRequirement:
 
-    def __init__(self, major,sub_major):
-        self.GradRequirmentDB = GradRequirementsDB
+    def __init__(self):
+        self.GradRequirmentDB = GradRequirementsDB()
         self.total_credits
-        self.if_docsubmit =if_docsubmit
-        self.major =major
-        self.sub_major = sub_major
+        self.if_docsubmit
+        self.major
+        self.sub_major
         self.field
         self.field_name
         self.value
