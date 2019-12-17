@@ -174,6 +174,10 @@ class LoginUI(UITemplate):
                 messagebox.showerror(title="회원가입 에러", message="입력란을 모두 채워주세요")
                 return
 
+            if not self._entry_student_id.get().isdecimal():
+                messagebox.showerror(title="회원가입 에러", message="학번을 숫자로 입력해주세요")
+                return
+
             student_pd = Student()
             rad_var = self.radioVar_student.get()
             if rad_var == 1:  # 심컴
@@ -187,6 +191,11 @@ class LoginUI(UITemplate):
             if self._entry_register_faculty_department.get() and self._entry_register_faculty_name.get() and \
                     self._entry_register_faculty_pwd.get() and self._entry_register_faculty_id.get() and \
                     self._entry_register_faculty_num.get():
+
+                if not self._entry_register_faculty_id.get().isdecimal():
+                    messagebox.showerror(title="회원가입 에러", message="교직원 번호를 숫자로 입력해주세요")
+                    return
+
                 faculty_pd = Faculty()
                 faculty_pd.register_acc(self._entry_register_faculty_id.get(), self._entry_register_faculty_pwd.get(),
                                         self._entry_register_faculty_num.get(), self._entry_register_faculty_name.get(),

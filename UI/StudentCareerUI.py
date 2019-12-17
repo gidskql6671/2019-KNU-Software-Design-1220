@@ -13,16 +13,13 @@ class StudentCareerUI(UITemplate):
         self.student_main: StudentMainUI = student_main
         self._status = 0
         self._student_info: Student = None
-        self._gr_list = [] # 졸업 요건
+        self._gr_list = []  # 졸업 요건
         self._list_index = 0
 
-        self._subject: Subject = None
-        self._etc: etc = None
+        self._lecture: lecture = None
+        self._non_lecture: nonlecture = None
 
-        self._subject_career_list = []
-        self._etc_career_list = []
-
-        self.get_gr_list()
+        self._career_list = []
 
         self._setting_ui()
 
@@ -41,12 +38,21 @@ class StudentCareerUI(UITemplate):
         def cur_select(evt):
             if self._listbox.curselection():
                 self._list_index = self._listbox.curselection()[0]
-            else:
-                value = "원하는 항목을 선택하세요."
+                self._entry_name.configure(state="normal")
+                self._entry_stand.configure(state="normal")
+
+                self._entry_name.delete(0, END)
+                self._entry_stand.delete(0, END)
+                self._entry_value.delete(0, END)
+
+                self._entry_name.insert(0, self._gr_list[self._list_index][4])
+                self._entry_stand.insert(0, self._gr_list[self._list_index][5])
+                self._entry_value.insert(0, self._career_list[self._list_index])
+
+                self._entry_name.configure(state="readonly")
+                self._entry_stand.configure(state="readonly")
 
         self._listbox.bind("<<ListboxSelect>>", cur_select)
-
-        self._update_list()
 
         scrollbar["command"] = self._listbox.yview()
 
@@ -56,28 +62,58 @@ class StudentCareerUI(UITemplate):
         Label(frame_info, text="항목", font=self.font, bg='gray81').grid(row=0, column=0, padx=10)
         Label(frame_info, text="기준", font=self.font, bg='gray81').grid(row=1, column=0, padx=10, pady=10)
         Label(frame_info, text="달성 정도", font=self.font, bg='gray81').grid(row=2, column=0, padx=10)
-        Label()
+        self._entry_name = Entry(frame_info, font=("맑은 고딕", 18), width=12, state="readonly")
+        self._entry_stand = Entry(frame_info, font=("맑은 고딕", 18), width=12, state="readonly")
+        self._entry_value = Entry(frame_info, font=("맑은 고딕", 18), width=12)
 
+        self._entry_name.grid(row=0, column=1, padx=10)
+        self._entry_stand.grid(row=1, column=1, padx=10, pady=10)
+        self._entry_value.grid(row=2, column=1, padx=10)
 
         Button(frame_info, text="확인", font=self.font, bg='gray86', command=self._handler_info_ok).grid(row=3, column=0, pady=30)
 
-
     def start(self, info):
         self._student_info = info
-        self._subject = Subject(info.get_id())
-        #self._etc = etc(info.get_id())
+        self._lecture = lecture(info.get_id())
+        self._non_lecture = nonlecture(info.get_id())
+
+        self._entry_name.delete(0, END)
+        self._entry_stand.delete(0, END)
+        self._entry_value.delete(0, END)
+        self._listbox.select_clear(0, END)
+
+        self.get_gr_list()
+        self.get_career()
+        self._update_list()
+
         self._status = 0
-        self._listbox.selection_set(0)
         self._draw_main()
 
     def btn_back_handler(self):
-        del self._subject
-        del self._etc
+        del self._lecture
+        del self._non_lecture
         self._erase_main()
         self.student_main.start(self._student_info)
 
     def _handler_info_ok(self):
-        pass
+        print(self._entry_value.get())
+        if not self._entry_value.get() or not self._entry_value.get().isdecimal():
+            messagebox.showerror(title="경력 입력 에러", message="경력 값으로 정수를 입력하세요.")
+            return
+
+        self._career_list[self._list_index] = int(self._entry_value.get())
+
+        self._update_list()
+
+    def get_career(self):
+        self._career_list.clear()
+        for i in range(0, len(self._gr_list)):
+            value_lecture = self._lecture.search_lec_value(self._gr_list[i][4])
+            value_non_lecture = self._non_lecture.search_nonlec_value(self._gr_list[i][4])
+            if value_lecture:
+                self._career_list.append(value_lecture)
+            else:
+                self._career_list.append(value_non_lecture)
 
     def get_gr_list(self):
         # 테스트 용
@@ -102,4 +138,9 @@ class StudentCareerUI(UITemplate):
     def _update_list(self):
         self._listbox.delete(0, END)
         for index in range(0, len(self._gr_list)):
-            self._listbox.insert(index, self._gr_list[index][4] + "  " + str(self._gr_list[index][5]))
+            if self._career_list[index] < self._gr_list[index][5]:
+                self._listbox.insert(index, self._gr_list[index][4] + " : " + str(self._career_list[index])
+                                     + "/" + str(self._gr_list[index][5]) + "  (미달성)")
+            else:
+                self._listbox.insert(index, self._gr_list[index][4] + " : " + str(self._career_list[index])
+                                     + "/" + str(self._gr_list[index][5]) + "  (달성)")
