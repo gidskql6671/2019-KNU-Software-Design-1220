@@ -10,18 +10,19 @@ class FacultyGRUI(UITemplate):
         self._add_status = 0
         self._status = 0
         self._mainmenu_ui = mainmenu_ui
+        self._list_index = -1
 
         self._select_type = ""
+        self._sub = ""
         self._gr = None  # 졸업요건 클래스가 들어갈거다.
         self._gr_list = []
+        self._gr_list_count = 0
         self._faculty_info: Faculty = None
 
         self._entry_edit_name: Entry = None
-        self._entry_edit_des: Entry = None
+        self._entry_edit_value: Entry = None
         self._text_edit_des: Text = None
         self._edit_index = 0
-
-        self.get_gr_list()
 
         self._setting_ui()
 
@@ -34,15 +35,20 @@ class FacultyGRUI(UITemplate):
         Label(frame_select_sub, text="수정 및 조회하고 싶은 전공을 선택하세요", bg="gray81", font=self.font)\
             .grid(column=0, row=0, columnspan=3, pady=10)
 
-        def select_btn_handler(select_type):
+        def select_btn_handler(select_type, sub):
             self._select_type = select_type
+            self._sub = sub
             self._erase_select_main()
             self._status = 1
             print(self._select_type)
+            if sub == "DeepCseMajorAfter12":
+                self._gr = DeepCseMajorAfter12()
+            self.get_gr_list()
+            self._update_gr_list()
             self._draw_main()
 
         Button(frame_select_sub, text="심화컴퓨터", bg="gray86", font=self.font,
-               command=lambda: select_btn_handler("심화컴퓨터")).grid(column=0, row=1, pady=20)
+               command=lambda: select_btn_handler("DeepCseMajor", "DeepCseMajorAfter12")).grid(column=0, row=1, pady=20)
         Button(frame_select_sub, text="글로벌소프트웨어", bg="gray86", font=self.font,
                command=lambda: select_btn_handler("글로벌소프트웨어")).grid(column=1, row=1, padx=10)
         Button(frame_select_sub, text="SW 연계/융합전공", bg="gray86", font=self.font,
@@ -67,12 +73,12 @@ class FacultyGRUI(UITemplate):
 
         def cur_select(evt):
             if self._listbox.curselection():
-                list_index = self._listbox.curselection()[0]
+                self.list_index = self._listbox.curselection()[0]
                 self.text.configure(state='normal')
                 self.text.delete('1.0', END)
-                self.text.insert('1.0', self._gr_list[list_index][0] + "  ")
-                self.text.insert(CURRENT, self._gr_list[list_index][1] + "\n")
-                self.text.insert(CURRENT, self._gr_list[list_index][2])
+                self.text.insert('1.0', self._gr_list[self.list_index][4] + "  ")
+                self.text.insert(CURRENT, self._gr_list[self.list_index][5] + "\n")
+                self.text.insert(CURRENT, self._gr_list[self.list_index][6])
                 self.text.configure(state='disabled')
             else:
                 value = "원하는 항목을 선택하세요."
@@ -82,8 +88,6 @@ class FacultyGRUI(UITemplate):
                 self.text.configure(state='disabled')
 
         self._listbox.bind("<<ListboxSelect>>", cur_select)
-
-        self._update_gr_list()
 
         self._scrollbar["command"] = self._listbox.yview()
 
@@ -105,8 +109,8 @@ class FacultyGRUI(UITemplate):
         self._entry_add_name = Entry(frame_add_main_sub1, width=15, font=self.font)
         self._entry_add_name.grid(column=0, row=1)
         Label(frame_add_main_sub1, text="달성 기준", font=self.font, bg="gray81").grid(column=1, row=0)
-        self._entry_add_des = Entry(frame_add_main_sub1, width=15, font=self.font)
-        self._entry_add_des.grid(column=1, row=1)
+        self._entry_add_value = Entry(frame_add_main_sub1, width=15, font=self.font)
+        self._entry_add_value.grid(column=1, row=1)
         Label(frame_add_main_sub1, text="상세 설명", font=self.font, bg="gray81").grid(column=0, row=2)
         self._text_add_des = Text(frame_add_main_sub1, width=50, height=8, font=("맑은 고딕", 12))
         self._text_add_des.insert("1.0", "상세한 설명을 적어주세요.(선택 사항)")
@@ -132,8 +136,8 @@ class FacultyGRUI(UITemplate):
         self._entry_edit_name = Entry(frame_edit_main_sub1, width=15, font=self.font)
         self._entry_edit_name.grid(column=0, row=1)
         Label(frame_edit_main_sub1, text="달성 기준", font=self.font, bg="gray81").grid(column=1, row=0)
-        self._entry_edit_des = Entry(frame_edit_main_sub1, width=15, font=self.font)
-        self._entry_edit_des.grid(column=1, row=1)
+        self._entry_edit_value = Entry(frame_edit_main_sub1, width=15, font=self.font)
+        self._entry_edit_value.grid(column=1, row=1)
         Label(frame_edit_main_sub1, text="상세 설명", font=self.font, bg="gray81").grid(column=0, row=2)
         self._text_edit_des = Text(frame_edit_main_sub1, width=50, height=8, font=("맑은 고딕", 12))
         self._text_edit_des.grid(column=0, row=3, columnspan=2)
@@ -151,6 +155,7 @@ class FacultyGRUI(UITemplate):
         elif self._status == 1:
             self._erase_main()
             self._status = 0
+            del self._gr
             self._draw_select_main()
         elif self._status == 2:
             self._erase_add_main()
@@ -162,17 +167,14 @@ class FacultyGRUI(UITemplate):
             self._draw_main()
 
     def get_gr_list(self):
-        # 테스트 용
-        for i in range(0, 10):
-            self._gr_list.append([])
-            self._gr_list[i].append(str(i) + "번째")
-            self._gr_list[i].append("달성기준")
-            self._gr_list[i].append("자세한 설명?")
+        self._gr_list = self._gr.get_GradCondition(1)
+        self._gr_list_count = len(self._gr_list)
 
     def _update_gr_list(self):
         self._listbox.delete(0, END)
+        self.get_gr_list()
         for index in range(0, len(self._gr_list)):
-            self._listbox.insert(index, self._gr_list[index][0] + " " + self._gr_list[index][1])
+            self._listbox.insert(index, self._gr_list[index][4] + " : " + self._gr_list[index][5])
 
         # pd 영역에 보내줘야함.
 
@@ -195,16 +197,19 @@ class FacultyGRUI(UITemplate):
         self.frame_edit_main.pack_forget()
 
     def handler_add_ok(self):
-        if not self._entry_add_name.get() or not self._entry_add_des.get():
+        if not self._entry_add_name.get() or not self._entry_add_value.get():
             messagebox.showerror(title="졸업요건 추가 에러", message="항목이름과 달성기준을 채워주세요")
             return
-        print(self._entry_add_name.get(), self._entry_add_des.get(), self._text_add_des.get("1.0", END))
+        if not self._entry_add_value.get().isdecimal():
+            messagebox.showerror(title="졸업요건 추가 에러", message="달성기준을 숫자로 채워주세요")
+            return
 
-        gr_size = len(self._gr_list)
-        self._gr_list.append([])
-        self._gr_list[gr_size].append(self._entry_add_name.get())
-        self._gr_list[gr_size].append(self._entry_add_des.get())
-        self._gr_list[gr_size].append(self._text_add_des.get('1.0', END))
+        print(self._entry_add_name.get(), self._entry_add_value.get(), self._text_add_des.get("1.0", END))
+
+        if self._gr.create_GradCondition("1", self._entry_add_name.get(), self._entry_add_name.get(),
+                    self._entry_add_value.get(), self._text_add_des.get('1.0', END)) == -1:
+            messagebox.showerror(title="졸업요건 추가 에러", message="이미 있는 항목명입니다")
+            return
 
         self._update_gr_list()
 
@@ -215,18 +220,18 @@ class FacultyGRUI(UITemplate):
 
         self._erase_add_main()
 
-        self._status = 0
-        self._draw_add_main()
+        self._status = 1
+        self._draw_main()
 
     def handler_edit_ok(self):
         if not self._entry_edit_name.get() or not self._entry_edit_name.get():
             messagebox.showerror(title="졸업요건 수정 에러", message="항목이름과 달성기준을 채워주세요")
             return
-        print(self._entry_edit_name.get(), self._entry_edit_des.get(), self._text_edit_des.get("1.0", END))
+        if not self._entry_edit_value.get().isdecimal():
+            messagebox.showerror(title="졸업요건 수정 에러", message="달성기준을 숫자로 채워주세요")
+            return
 
-        self._gr_list[self._edit_index][0] = self._entry_edit_name.get()
-        self._gr_list[self._edit_index][1] = self._entry_edit_des.get()
-        self._gr_list[self._edit_index][2] = self._text_edit_des.get("1.0", END)
+        self._gr.edit_GradCondition("1", self._entry_edit_name.get(), self._entry_edit_name.get(), self._entry_edit_value.get(), self._text_edit_des.get("1.0", END))
 
         self._update_gr_list()
 
@@ -236,7 +241,7 @@ class FacultyGRUI(UITemplate):
         self.text.configure(state='disabled')
 
         self._erase_edit_main()
-        self._status = 0
+        self._status = 1
         self._draw_main()
 
     def handler_add(self):
@@ -245,7 +250,7 @@ class FacultyGRUI(UITemplate):
         self._add_status = 0
 
         self._entry_add_name.delete(0, END)
-        self._entry_add_des.delete(0, END)
+        self._entry_add_value.delete(0, END)
         self._text_add_des.delete("1.0", END)
         self._text_add_des.insert("1.0", "상세한 설명을 적어주세요.(선택 사항)")
 
@@ -266,12 +271,14 @@ class FacultyGRUI(UITemplate):
         self._status = 2
 
         self._edit_index = self._listbox.curselection()[0]
+        self._entry_edit_name.configure(state="normal")
         self._entry_edit_name.delete(0, END)
-        self._entry_edit_name.insert(0, self._gr_list[self._edit_index][0])
-        self._entry_edit_des.delete(0, END)
-        self._entry_edit_des.insert(0, self._gr_list[self._edit_index][1])
+        self._entry_edit_name.insert(0, self._gr_list[self._edit_index][4])
+        self._entry_edit_name.configure(state="readonly")
+        self._entry_edit_value.delete(0, END)
+        self._entry_edit_value.insert(0, self._gr_list[self._edit_index][5])
         self._text_edit_des.delete("1.0", END)
-        self._text_edit_des.insert("1.0", self._gr_list[self._edit_index][2])
+        self._text_edit_des.insert("1.0", self._gr_list[self._edit_index][6])
 
         self._listbox.select_clear(0, END)
         self.text.configure(state='normal')
@@ -286,8 +293,11 @@ class FacultyGRUI(UITemplate):
             messagebox.showerror(title="삭제 에러", message="삭제하고자 하는 항목을 선택해주세요")
             return
 
-        del self._gr_list[self._listbox.curselection()[0]]
-        self._listbox.delete(self._listbox.curselection()[0])
+        self._gr.delete_GradCondition("1", self._gr_list[self._list_index][3])
+        self._list_index = -1
+
+        self.get_gr_list()
+        self._update_gr_list()
 
         value = "원하는 항목을 선택하세요."
         self.text.configure(state='normal')
@@ -302,6 +312,7 @@ class FacultyGRUI(UITemplate):
 
         self._status = 0
 
+        self._list_index = -1
         self._listbox.select_clear(0, END)
 
         self.text.configure(state='normal')

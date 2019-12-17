@@ -3,15 +3,8 @@ from DBConnection.GradRequirementsDB import GradRequirementsDB
 class GradRequirement:
 
     def __init__(self):
-        self.GradRequirmentDB = GradRequirementsDB()
-        self.total_credits
-        self.if_docsubmit
-        self.major
-        self.sub_major
-        self.field
-        self.field_name
-        self.value
-        self.description
+        self.GradRequirementDB = GradRequirementsDB()
+        self._gr_list = []
 
 
     #디비에 해당 학과의 졸업 요건 추가
