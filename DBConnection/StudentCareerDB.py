@@ -45,7 +45,7 @@ class StudentCareerDB(object):
     # career_code로 행을 찾아서 그 행을 주어진 정보로 전체 업데이트함
     def edit_lecture_career(self, args: tuple):
         (student_id, career_code, type_name, value, date) = args
-        self.cur.execute(f'UPDATE lecture_career SET student_id={student_id}, type_name={type_name}, value={value}, date={date} WHERE career_code=?', (career_code,))
+        self.cur.execute(f"UPDATE lecture_career SET student_id='{student_id}', type_name='{type_name}', value='{value}', date='{date}' WHERE career_code=?", (career_code,))
         self.conn.commit()
     
     # 교과경력 삭제

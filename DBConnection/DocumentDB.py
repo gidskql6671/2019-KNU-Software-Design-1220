@@ -38,7 +38,7 @@ class DocumentDB(object):
     # code로 행을 찾아서 그 행을 주어진 정보로 전체 업데이트함
     def edit_document(self, args: tuple):
         (code, submit_date, expire_date, doc_file) = args
-        self.cur.execute(f'UPDATE document SET submit_date={submit_date}, expire_date={expire_date}, doc_file={doc_file} WHERE code=?', (code))
+        self.cur.execute(f"UPDATE document SET submit_date='{submit_date}', expire_date='{expire_date}', doc_file='{doc_file}' WHERE code=?", (code))
         self.conn.commit()
     
     # 증빙서류 삭제

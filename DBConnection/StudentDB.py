@@ -34,7 +34,7 @@ class StudentDB(object):
     # args로 (user_id, user_pw, student_id, name, major, is_abeek) 6개 항목 tuple을 주면, user_id, user_pw로 검색한 행을 넘겨준 전체 정보로 갱신
     def update(self, args: tuple):
         (user_id, user_pw, student_id, name, major, is_abeek) = args
-        self.cur.execute(f'UPDATE student SET id={user_id}, password={user_pw}, student_id={student_id}, name={name}, major={major}, is_abeek={is_abeek} WHERE id=? AND password=?', args)
+        self.cur.execute(f"UPDATE student SET id='{user_id}', password='{user_pw}', student_id='{student_id}', name='{name}', major='{major}', is_abeek='{is_abeek}' WHERE id=? AND password=?", args)
         self.conn.commit()
     
     # 학생 계정 탈퇴 (계정 정보만 삭제)

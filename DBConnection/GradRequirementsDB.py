@@ -55,7 +55,7 @@ class GradRequirementsDB(object):
     # 해당하는 (major, sub_major, type, field)의 값을 새 값들로 모두 바꿈
     def edit_requirement(self, args: tuple):
         (major, sub_major, type, field, field_name, value, description) = args
-        self.cur.execute(f'UPDATE grad_requirements SET field_name={field_name}, value={value}, description={description} WHERE major=? AND sub_major=? AND type=? AND field=?', (major, sub_major, type, field))
+        self.cur.execute(f"UPDATE grad_requirements SET field_name='{field_name}', value='{value}', description='{description}' WHERE major=? AND sub_major=? AND type=? AND field=?", (major, sub_major, type, field))
         self.conn.commit()
 
     # 졸업요건 항목 삭제하기

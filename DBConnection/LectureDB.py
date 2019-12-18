@@ -36,7 +36,7 @@ class LectureDB(object):
     # new_lecture와 같이 6개 tuple을 주면, code에 해당하는 과목코드의 과목의 정보를 모두 주어진 정보로 수정
     def edit_lecture(self, args: tuple):
         (code, type, name, point, is_necessary, is_abeek) = args
-        self.cur.execute(f'UPDATE lecture SET code={code}, type={type}, name={name}, point={point}, is_necessary={is_necessary}, is_abeek={is_abeek} WHERE code=?', (code))
+        self.cur.execute(f"UPDATE lecture SET code='{code}', type='{type}', name='{name}', point='{point}', is_necessary='{is_necessary}', is_abeek='{is_abeek}' WHERE code=?", (code))
         self.conn.commit()
     
     # 교과목 삭제하기

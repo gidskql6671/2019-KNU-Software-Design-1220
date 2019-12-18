@@ -33,7 +33,7 @@ class FacultyDB(object):
     # args로 (user_id, user_pw, faculty_id, name, department) 5개 항목 tuple을 주면, user_id, user_pw로 검색한 행을 넘겨준 전체 정보로 갱신
     def update(self, args: tuple):
         (user_id, user_pw, faculty_id, name, department) = args
-        self.cur.execute(f'UPDATE faculty SET id={user_id}, password={user_pw}, faculty_id={faculty_id}, name={name}, department={department} WHERE id=? AND password=?', args)
+        self.cur.execute(f"UPDATE faculty SET id='{user_id}', password='{user_pw}', faculty_id='{faculty_id}', name='{name}', department='{department}' WHERE id=? AND password=?", args)
         self.conn.commit()
     
     # 교직원 계정 탈퇴 (계정 정보만 삭제)

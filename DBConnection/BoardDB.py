@@ -37,7 +37,7 @@ class BoardDB(object):
     # id는 수정할 질문 id
     def edit_question(self, args: tuple):
         (id, title, content) = args
-        self.cur.execute(f'UPDATE question SET title={title}, content={content} WHERE id=?', (id))
+        self.cur.execute(f"UPDATE question SET title='{title}', content='{content}' WHERE id=?", (id))
         self.conn.commit()
 
     # 질문 삭제하기
@@ -81,7 +81,7 @@ class BoardDB(object):
     # id는 수정할 답변 id
     def edit_answer(self, args: tuple):
         (id, content) = args
-        self.cur.execute(f'UPDATE answer SET content={content} WHERE id=?', (id))
+        self.cur.execute(f"UPDATE answer SET content='{content}' WHERE id=?", (id))
         self.conn.commit()
 
     # 질문 삭제하기
