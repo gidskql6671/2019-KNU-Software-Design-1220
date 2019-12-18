@@ -2,6 +2,11 @@ from UI.UITemplate import *
 from UI.FacultyMainUI import *
 from UserAccount.Faculty import Faculty
 from GraduationRequirements.DeepCseMajorAfter12 import DeepCseMajorAfter12
+from GraduationRequirements.MultipleMajorTrack import MultipleMajorTrack
+from GraduationRequirements.ConvergenceMajor import ConvergenceMajor
+from GraduationRequirements.LinkedMajor import LinkedMajor
+from GraduationRequirements.MultipleMajor import MultipleMajor
+
 
 class FacultyGRUI(UITemplate):
     def __init__(self, window: Tk, font, mainmenu_ui):
@@ -33,7 +38,7 @@ class FacultyGRUI(UITemplate):
         Label(self.frame_select, text="학생 경력 관리 시스템", font=("맑은 고딕", 30), bg="gray86").pack(pady=30)
         frame_select_sub = Frame(self.frame_select, borderwidth=5, relief="groove", bg="gray81", padx=30, pady=30)
         Label(frame_select_sub, text="수정 및 조회하고 싶은 전공을 선택하세요", bg="gray81", font=self.font)\
-            .grid(column=0, row=0, columnspan=3, pady=10)
+            .grid(column=1, row=0, columnspan=4, pady=10)
 
         def select_btn_handler(select_type, sub):
             self._select_type = select_type
@@ -43,16 +48,28 @@ class FacultyGRUI(UITemplate):
             print(self._select_type)
             if sub == "DeepCseMajorAfter12":
                 self._gr = DeepCseMajorAfter12()
+            elif sub == "MultipleMajorTrack":
+                self._gr = MultipleMajorTrack()
+            elif sub == "LinkedMajor":
+                self._gr = LinkedMajor()
+            elif sub == "ConvergenceMajor":
+                self._gr = ConvergenceMajor()
+            elif sub == "MultipleMajor":
+                self._gr = MultipleMajor()
             self.get_gr_list()
             self._update_gr_list()
             self._draw_main()
 
-        Button(frame_select_sub, text="심화컴퓨터", bg="gray86", font=self.font,
+        Button(frame_select_sub, text="심화컴퓨터", bg="gray86", font=("맑은 고딕", 16),
                command=lambda: select_btn_handler("DeepCseMajor", "DeepCseMajorAfter12")).grid(column=0, row=1, pady=20)
-        Button(frame_select_sub, text="글로벌소프트웨어", bg="gray86", font=self.font,
-               command=lambda: select_btn_handler("글로벌소프트웨어")).grid(column=1, row=1, padx=10)
-        Button(frame_select_sub, text="SW 연계/융합전공", bg="gray86", font=self.font,
-               command=lambda: select_btn_handler("SW 연계/융합전공")).grid(column=2, row=1)
+        Button(frame_select_sub, text="글로벌소프트웨어", bg="gray86", font=("맑은 고딕", 16),
+               command=lambda: select_btn_handler("GlobalSWMajor", "MultipleMajorTrack")).grid(column=1, row=1, padx=10)
+        Button(frame_select_sub, text="SW 연계 전공", bg="gray86", font=("맑은 고딕", 16),
+               command=lambda: select_btn_handler("LinkedMajor", "LinkedMajor")).grid(column=3, row=1)
+        Button(frame_select_sub, text="SW 융합 전공", bg="gray86", font=("맑은 고딕", 16),
+               command=lambda: select_btn_handler("ConvergenceMajor", "ConvergenceMajor")).grid(column=4, row=1, padx=10)
+        Button(frame_select_sub, text="복수 전공", bg="gray86", font=("맑은 고딕", 16),
+               command=lambda: select_btn_handler("MultipleMajor", "MultipleMajor")).grid(column=5, row=1)
         Button(self.frame_select, text="뒤로가기", font=("맑은 고딕", 12), command=self.btn_back_handler)\
             .pack(side="left",anchor="s")
         frame_select_sub.place(relx=0.5, rely=0.65, anchor="center")
@@ -246,7 +263,7 @@ class FacultyGRUI(UITemplate):
 
     def handler_add(self):
         self._erase_main()
-        self._status = 1
+        self._status = 2
         self._add_status = 0
 
         self._entry_add_name.delete(0, END)
@@ -268,7 +285,7 @@ class FacultyGRUI(UITemplate):
             return
 
         self._erase_main()
-        self._status = 2
+        self._status = 3
 
         self._edit_index = self._listbox.curselection()[0]
         self._entry_edit_name.configure(state="normal")

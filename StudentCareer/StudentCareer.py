@@ -26,9 +26,11 @@ class lecture(StdCareer):
                 _temp[3] = value
                 _temp[4] = datetime.now()
                 self._career[i] = tuple(_temp)
+                print(_temp)
                 self._career_DB.edit_lecture_career(self._career[i])
                 return
-        _temp = (self._id, random.randint(0, 10000), name, value, datetime.now())
+
+        _temp = (self._id, name, name, value, datetime.now())
         self._career_DB.new_lecture_career(_temp)
 
     # category : ABEEK 기본, ABEEK 전공, ABEEK 공학, 영어 성적, 현장 실습 등...
@@ -66,7 +68,7 @@ class nonlecture(StdCareer):
                 self._career[i] = tuple(_temp)
                 self._career_DB.edit_nonlecture_career(self._career[i])
                 return
-        _temp = (self._id, random.randint(0, 10000), expire_date, field, value, datetime.now())
+        _temp = (self._id, code, expire_date, field, value, datetime.now())
         self._career_DB.new_nonlecture_career(_temp)
 
     def del_document(self, code):

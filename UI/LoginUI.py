@@ -182,10 +182,19 @@ class LoginUI(UITemplate):
             rad_var = self.radioVar_student.get()
             if rad_var == 1:  # 심컴
                 student_pd.register_acc(self._entry_register_id.get(), self._entry_register_pwd.get(),
-                                        self._entry_student_id.get(), self._entry_student_name.get(), "DeepCseMajor", True)
+                                        self._entry_student_id.get(), self._entry_student_name.get(), "DeepCseMajorAfter12", True)
             elif rad_var == 2:  # 글솦
                 student_pd.register_acc(self._entry_register_id.get(), self._entry_register_pwd.get(),
-                                        self._entry_student_id.get(), self._entry_student_name.get(), "GlobalSWMajor", False)
+                                        self._entry_student_id.get(), self._entry_student_name.get(), "MultipleMajorTrack", False)
+            elif rad_var == 3:  # 연계
+                student_pd.register_acc(self._entry_register_id.get(), self._entry_register_pwd.get(),
+                                        self._entry_student_id.get(), self._entry_student_name.get(), "LinkedMajor", False)
+            elif rad_var == 4:  # 융합
+                student_pd.register_acc(self._entry_register_id.get(), self._entry_register_pwd.get(),
+                                        self._entry_student_id.get(), self._entry_student_name.get(), "ConvergenceMajor", False)
+            elif rad_var == 5:  # 복수
+                student_pd.register_acc(self._entry_register_id.get(), self._entry_register_pwd.get(),
+                                        self._entry_student_id.get(), self._entry_student_name.get(), "MultipleMajor", False)
             del student_pd
         else:
             if self._entry_register_faculty_department.get() and self._entry_register_faculty_name.get() and \

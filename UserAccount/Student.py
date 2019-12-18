@@ -8,6 +8,9 @@ class Student(UserAccount):
 
         self._user_DB = StudentDB()
 
+    def get_major(self):
+        return self._user_info[4]
+
     def get_info(self):
         return self._user_info
 
@@ -26,5 +29,5 @@ class Student(UserAccount):
         print((user_id, user_pw, student_id, name, major, is_abeek))
         self._user_DB.register((user_id, user_pw, student_id, name, major, is_abeek))
 
-    def del_acc(self):
-        self._user_DB.delete((self._user_id, self._user_pw))
+    def del_acc(self, user_id, user_pw):
+        self._user_DB.delete((user_id, user_pw))

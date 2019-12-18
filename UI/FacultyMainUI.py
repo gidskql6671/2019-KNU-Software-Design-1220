@@ -38,6 +38,6 @@ class FacultyMainUI(UITemplate):
         self._gr_ui.start(self)
 
     def _start_qna(self):
-        # self._erase_main()
-        # self._qna_ui.start()
+        self._erase_main()
+        self._qna_ui.start(self)
         pass
