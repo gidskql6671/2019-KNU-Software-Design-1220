@@ -345,6 +345,10 @@ class FacultyGRUI(UITemplate):
     def start(self, info):
         self._faculty_info = info
 
+        if not self._faculty_info:
+            messagebox.showerror(title="권한 에러", message="로그인이 정상적으로 되지 않았습니다.")
+            return
+
         self._status = 0
 
         self._list_index = -1

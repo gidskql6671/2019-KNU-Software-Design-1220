@@ -85,6 +85,10 @@ class StudentGRUI(UITemplate):
     def start(self, info):
         self._student_info = info
 
+        if not self._student_info:
+            messagebox.showerror(title="권한 에러", message="로그인이 정상적으로 되지 않았습니다.")
+            return
+
         major = info.get_major()
 
         if major == "DeepCseMajorAfter12":
