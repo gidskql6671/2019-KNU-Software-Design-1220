@@ -32,6 +32,7 @@ class lecture(StdCareer):
 
         _temp = (self._id, name, name, value, datetime.now())
         self._career_DB.new_lecture_career(_temp)
+        self._career.append(_temp)
 
     # category : ABEEK 기본, ABEEK 전공, ABEEK 공학, 영어 성적, 현장 실습 등...
     def search_lec_value(self, category):

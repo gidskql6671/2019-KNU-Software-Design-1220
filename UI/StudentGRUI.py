@@ -30,7 +30,7 @@ class StudentGRUI(UITemplate):
         Label(frame_info, text="기준", font=self.font, bg='gray81').grid(row=1, column=0, padx=10, pady=10)
         Label(frame_info, text="상세 설명", font=self.font, bg='gray81').grid(row=2, column=0, padx=10)
         self._entry_name = Entry(frame_info, font=("맑은 고딕", 18), width=12, state="readonly")
-        self._text_des = Text(frame_info, font=("맑은 고딕", 16), height=7, width=16, state="disabled")
+        self._text_des = Text(frame_info, font=("맑은 고딕", 12), height=7, width=18, state="disabled")
         self._entry_value = Entry(frame_info, font=("맑은 고딕", 18), width=12, state="readonly")
 
         self._entry_name.grid(row=0, column=1, padx=10)
@@ -80,7 +80,7 @@ class StudentGRUI(UITemplate):
         self._scrollbar["command"] = self._listbox.yview()
 
         self.frame_list.pack(side="left")
-        frame_info.pack(side="right", padx=40, pady=40, anchor="s")
+        frame_info.pack(side="right", padx=40, pady=100, anchor="s")
 
     def start(self, info):
         self._student_info = info
