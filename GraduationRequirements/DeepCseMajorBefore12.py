@@ -1,30 +1,34 @@
-from GraduationRequirements import DeepCseMajor
-from DBConnection import GradRequirementsDB
+from GraduationRequirements.DeepCseMajor import DeepCseMajor
+
 
 class DeepCseMajorBefore12(DeepCseMajor):
 
     def __init__(self):
-        self.GradRequirmentDB = GradRequirementsDB
-        self.total_credits
-        self.if_docsubmit
-        self.major = 'DeepCseMajor'
-        self.sub_major = 'DeepCseBefore12'
-        self.field
-        self.field_name
-        self.value
-        self.description = ''
+        super().__init__()
+
+        # gr_type은 교과인지 비교과인지. 교과면 1, 비교과면 0
+        # code는 항목당 고유한 코드, name은 항목의 이름, value는 값, des는 설명
+
+    def edit_GradCondition(self, gr_type, code, name, value, des):
+        self.GradRequirementDB.edit_requirement(
+            ("DeepCseMajor", "DeepCseMajorBefore12", gr_type, code, name, value, des))
+
+    def create_GradCondition(self, gr_type, code, name, value, des):
+        if self.GradRequirementDB.search_requirement(("DeepCseMajor", "DeepCseMajorBefore12", gr_type, code)):
+            return -1
+        self.GradRequirementDB.new_requirement(("DeepCseMajor", "DeepCseMajorBefore12", gr_type, code, name, value, des))
+        return 0
+
+    def delete_GradCondition(self, gr_type, code):
+        # args : (major, sub_major, type, field)
+        self.GradRequirementDB.delete_requirement(("DeepCseMajor", "DeepCseMajorBefore12", gr_type, code))
+
+        # 이 이차원 배열을 리턴함 (getter)
+
+    def get_GradCondition(self, gr_type):
+        self._gr_list = self.GradRequirementDB.list_requirement(("DeepCseMajor", "DeepCseMajorBefore12", gr_type))
+        return self._gr_list
 
 
-    # 디비에 학과 이름 넘겨주고 해당 속성값에 대한 졸업 요건을 받아온다
-    # 학점 - 몇|영어성적 -몇 | 에이빅 학점 - 몇 이런식으로 이차원 행렬 만듦
-    def set_GradCondition(self):
-        GradRequirementsDB.edit_requirement(self.major,self.submajor,self.field,self.field_name,self.value,self.description)
-
-
-
-    # 이 이차원 배열을 리턴함 (getter)
-    def get_GradCondition(self):
-        tuple = GradRequirementsDB.list_requirment(self.major, self.sub_major)
-        return tuple
 
 
